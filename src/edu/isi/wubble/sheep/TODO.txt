@@ -1,0 +1,2906 @@
+Chimp: Mark: What if you and I are the same?
+
+1-28-08
+-------
+
+  - Come up with new primitives, along the line of the inFOV predicate
+  
+  - Which ones?
+  - Get the "mutualFOV" predicate.
+
+
+1-25-08
+-------
+
+  x - Problem using JRuby, painfully resolved: make sure the package
+    containing the class you're trying to extend doesn't conflict with
+    any other package.  Weird shit will happen, but you won't know
+    what weird shit is happening.
+
+  - Try to make a graph from Ruby.
+
+1-24-08
+-------
+
+  p: Get a shitload of data.  Big sentences.  Big scenes.  Big learning.
+
+  s: The learning that you do is the wrong way - it's violating the
+  notion of development and bootstrapping.  You get this huge shitload
+  of data, and start cranking on the shitload of data, and it becomes
+  intractable.
+
+  p: What do you mean?
+
+  s: An entity can't do everything in the world; what it can do is a
+  very finite set of things: it can Jump, Run, Push a Sheep, etc.
+  Each of these actions has very finite consequences.  Why not learn,
+  specifically, what they are?  Why not learn what Jump means, and all
+  the rest, in a reduced setting, a very particular setting, instead
+  of smashing the learning algorithm with everything imaginable and
+  hoping it will suss Jump out frmo there?
+
+  s: And on top of that, the utterances in sheep are either complex,
+  like "Get the sheep that's going in the garden out of the garden" or
+  else really simple, like "Get it - no!"  In the former case, you
+  have a structurally rich utterance displaying recursive structure,
+  and a scene that has not been structured at all.  It's like looking
+  at a painting and trying to make sense of it when you haven't first
+  learned what a rectangle is, and then what a building is, and then
+  what a person is, and then what a dog is, and the way people and
+  dogs interact - it's just a blast of pixels.  So we need to go the
+  other way: structure the smallest bits, and then, using these
+  higher-order info products, structure the larger.
+
+  p: Isn't the training case that you describe - Jumping, and then
+  learning what it means - contained within the "shitload of data"
+  approach?  Can't you extract the simpler case you want from there?
+
+  s: Hmm.  Probably.
+
+  p: Then do that.  Get the data.  Then you can do whatever approach
+  you want to learn from it.  Reduce it magnificently, apply new
+  developmental abstractions, re-think the progression of how we learn
+  things, whatever.  If you have lots of data, even if there's a lot
+  of extra nonsense in there, then you can reduce it as appropriate;
+  you can choose to not use it.  But first you have to have it.  Maybe
+  your approach is right: in that case, there's extra stuff we'll
+  have, and you'll have done needless work.  But maybe it's not right,
+  and we won't have what we need to try other things.
+
+  s: What about learning by imitation?  What about composing concepts
+  and action?  What about -
+
+  p: All of that might be a good idea.  Get the SSC first, and then we
+  can talk about all that stuff.
+
+
+
+1-23-08
+-------
+
+  Regolatores check to see if they should fire (somewhere in the update loop)
+  They fire; then, during each update, they monitor, and take action
+
+  They turn themselves off, eventually.  (Or are turned off by the
+  system, when the system is exhausted.  Hmmm.)
+
+  It could be managed to make regolatores just a shell over the
+  standard controller architecture; how hard would this be?
+
+
+    
+
+1-22-08
+-------
+
+  - There's a need for controllers that can be applied in a BB-based
+    setting - they can see when they should be deployed, deploy
+    themselves, monitor their progress, and exit, when necessary.
+    This is closer to how my fluents worked, way back when.
+
+  - What's the most sensible way para manejar de aca a alla?  
+    - Revisar el codigo para reguladors
+    - Hace una lista de reguladors neuvos que quiero
+    - Hacelos.
+
+Idea, in brief:
+
+      Mirror neurons implicated in both action understanding and
+      performance.  In other words: it's the same mechanism.  Some
+      implications:
+
+        --> You can understand the things that you can do
+
+        --> More complex understanding will be built on some
+            [re]combination of what you can do.
+
+        --> Understanding (and hence performance) is based on
+            imitation - I learn to do X by seeing you do X.  I
+            understand x by knowing how to do x.
+
+        --> Really, though, I don't see X and do X.  I see X, which is
+            composed of a number of smaller actions (considered to be
+            atomic for simplicity) [a,b,c,d].  I need a method for
+            extracting these subcomponents from the sequence X; this
+            extraction will not always be easy.  For example,
+            parameterizations of a-d complicate things.  Temporal
+            dependencies between a-d complicate things.  Non-atomic
+            nature of a-d complicates things (ie, when I need to
+            recursively decompose complex action.)  The lack of
+            primitives complicates things (ie, when I observer a-d but
+            c is an atom that I simply don't have, and can't
+            construct, or can't figure out how to construct.)
+
+    What must a controller do to make possible this array of function?
+    It must:
+
+      --> Know when it is candidate for activation
+      --> Activate itself when appropriate
+      --> Monitor its progress or lack of progress; indicate them somehow.
+      --> Turn itself off when complete (either positively or negatively.)
+
+    (This sounds just like SOAR rule-firing.  Is there any difference
+    between this view and that view?  If this is just like SOAR, how
+    can that guide our efforts?)
+
+    Note on nomenclature: because "controller" has been used in so
+    many senses in our conversations and our codebase, and since many
+    of these senses are incompatible with the definition given above,
+    I'm going to use the Italian word "regolatore" to make the
+    distinction clear, and because Italian is cool.
+
+    Upon further review, more flexibility is required.  A regolatore
+    must not only know when it's a candidate for activation (this is
+    like reflex-level knowledge - a regolatore "wants" to be active
+    under certain circumstances) but we should be able to activate it
+    flexibly; for example, if the "push sheep when they're in front of
+    me regolatore" wants to fire when sheep are in front of it, we
+    should nonetheless be able to activate it when there are NOT sheep
+    in front of it.
+
+    But upon yet further review, this isn't right: the "push sheep
+    when they're in front of me" regolatore is really an accumulation
+    of atoms: knowing when a sheep is in front of you; and pushing.
+    If "pushing a sheep" and "pushing a wrench" are really different
+    things, then we lose the ability to generalize - such a wubble
+    would be unable to see that "pushing" in the former is the same as
+    "pushing" in the latter.  (Or at least, such distinctions would be
+    difficult.  With access to something like a fluent catalog, it
+    might notice that in both instances, when the regolatore
+    activates, something else gets further away - a sheep, or a wrench
+    - and from this effect form a notion of "similarity" between the
+    two regolatori.  (This seems a particularly image-schematic
+    construction: we can already see the beginnings of metaphor:
+    sheep-pushing is like wrench-pushing because in the consequences
+    of each, sheep-getting-further-away is like
+    wrench-getting-further-away.)
+
+    Regardless, a powerful relationship has been lost if the sorts of
+    pushing, as pushing, are conceptually distinct.  Intuitively this
+    is unreasonable, as in an embodied agent the same effectors, or a
+    subset of them, would be active in both.
+
+regolatore catalog:
+-------------------
+
+    InteractableFOV: fire according to a DEntity falling in a certain
+    part of its FOV; the idea is that high values of this mean that an
+    interaction is possible.
+
+    Turn-to: orients the nearest entity into its InteractableFOV.
+    This will fail if the nearest entity isn't near enough to fall
+    within the IFOV.
+
+    Move: moves in the direction the wubble is facing.  This is a
+    reformulation of existing methods, with the exception that the
+    regolatore can succeed or not - if there's a blockage it won't
+    work.
+
+    Go: move to a destination.
+
+    Go-to-entity: like Turn-to, except that it will work on any
+    entity: if the entity is too far away, the wubble will move over
+    to it.  This is a composite, involing Turn-To and Go, triggered
+    on the reports from IFOV.  Its firing will be protracted.
+
+    Push (whatever object is in front (within InteractableFOV range) is
+    given an impulse.  Strength of the impulse is parameterized.
+    
+    Speak: the wubble delivers a personal msg to the DEntity, presumed
+    to be in its InteractableFOV.  This can either be a real personal
+    msg, of the sort we already do, except more targeted, or it can be
+    artificial babbling.  The latter might be fun and a good way to
+    test motor babbling: record some samples of phonemes, and the
+    wubble, when it Speaks, marshals some random body of them.  Should
+    each one of these things be a Speak event?  Or the whole thing one
+    large speak event, as w/ Broadcast?
+
+    Broadcast: to differentiate from Speak.  This is our current
+    notion of "Speaking."
+
+    Jump: Same as our current jump.  Parameterize - you can jump
+    higher or lower, depending.
+
+    Grab: Holds onto a sheep; how will movement work in this case?
+    You'll be dragged by the sheep's movement, and the sheep by yours.
+    Like a more physically realistic sticky, maybe.  Must be in
+    InteractableFOV.  There must, of course, be some reason to do this
+    - maybe grabbing a sheep pacifies it?  Makes it stop moving, so it
+    can be pushed easily, or else ... I dunno.  Maybe other sheep will
+    move toward it if it's pacified?
+
+
+    Can we make all the powerups as modifications of regolatori?  Or
+    at least, make a set of powerups that are simple regolatore mods.
+    Jump,speedy already are.
+
+Regolatori we can [try to] learn
+------------------------
+
+  - Jump-in [get-in]
+  - Jump-on
+  - Jump-over
+
+      These are good choices in that they're relatively simple, yet
+      map very precisely to low-entropic linguistic constructs that
+      we're likely to observe in the actual sheep game, and, in the
+      event of jump/get-in, offer an opportunity for synonomy.  "Get
+      in the wrench."  "Jump in the wrench."
+
+
+Ideas to move forward:
+------------------
+
+  - Convert a subset of the controllors to regolatori; enough, at
+    least, to capture the notions of "jump-in".
+
+  - Run experiments to do fluent-learning on jump, jump-in, jump-over.
+    (These we began yesterday.)
+
+  - Implement simple "imitation" algorithm / infrastructure.  Can we
+    imitate jump-in even if we can't really learn that the "jump-in"
+    words correspond to it?
+
+  - Learn to recognize sequences of actions, and "describe" them in
+    terms of controllers.
+
+  - Learn [to do; to recognize] composite controllers, like Go-to-entity.
+
+
+Sentence/scene corpus
+------------------
+
+  How does this help the quest for the SSC?
+
+  If nothing else, it's a more complex set of atoms.  Instead of
+  having to try to figure out what a set of actions is wrt "move" and
+  "turn" and the like, we build up a catalog of high
+  information-content pieces, like go-to-entity.  This is likely to be
+  a more useful set of things to try to map to language.
+
+  It makes language actionable in a way it wasn't before.  Even if we
+  could figure out what "jump-over" was, using fluent-learning, we
+  couldn't then DO jump-over.  In this formulation, there is no
+  deduction without production.
+
+  Others?
+
+
+
+
+
+
+
+
+1-18-08
+-------
+  x - Fini a "in"
+
+  - Otro contolador, para interaciones con otros wubbles?  Por
+    ejemplo, no tenemos ningun idea, ningun idea verdadero, de
+    comunicar con otras criaturas; demasiado de los capacidades del
+    wubble no tienen nada de ver con su situacion - se puede hacer
+    todo, siempre.  Esto es un problema, para mi, y probablemente
+    prevenirira penetracion.  (Aunque, el aprender de fluentes esta
+    designado por esto, creo, pero no creo que va a funcionar sin
+    ayuda.)
+
+  - Agregue [agregar] una accion de "push" - un controlador de empujar
+    - que, al principio, es activado cuando algo esta dentro de
+    alcance.  Mas adelante, puedo romper el regulador en dos pedazos
+    (es como el opuesto del proceso normal: de uno a dos.  O quisaz
+    occure en los dos direciones; es facil de pensar en ejemplos.)
+
+    - Primero, agrega un "within reach" regulador; al principio, es
+      una region - un esfera que rodea el wubble, o, mejor, una region
+      que toma distancia en cuenta.
+
+  - Un problema, en el cuadro grande, es que no tenemos una abstracion
+    que encompasa los dos sentidos de "regolador" - literalmente, la
+    palabra trata de areglar los aciones del entidad - haciendolo
+    algo, esforzandolo en algo.  El uso idiomatico, que ahora esta, es
+    diferente, que trata de ... no se.  Supervisar las acciones, o
+    hacer algo en respuesta a la situacion currente.  
+
+    Necesitamos este sentido secondario, (o, actualmente, primario.)
+
+  - Para empujar: parA las ovejas; remover la esfuerza del contacto; impone 
+
+
+
+TRANSLATION NOTE:
+
+Add an item to the list. --> Agregue un artículo a la lista.
+I push the sheep across the room. --> Empujo las ovejas a través del cuarto.
+The sheep is within reach. --> La oveja está dentro de alcance.
+I break the controller into two pieces. --> Rompo el regulador en dos pedazos.
+A sphere surrounding the monkey. --> Una esfera que rodea el mono.
+A sphere that takes distance into account. --> Unsa esfera que toma distancia en cuenta.
+
+
+
+1-16-08
+-------
+  x - Finish ON
+
+  x - Why can't sheep be rotated when manually controlled?
+    x - Era el "MagicRotation" en el RotationController.  Esta removado, y parece areglado.
+    x - Puedo remover LocalKeyControllers?  Que hace estos?
+
+  - Poner otra vez los behavior strategies, que esta callable de los pre/post/ updates.
+
+  - Es extrano que cuando la oveja esta en su lado, no pueod moverla
+    manualmente, con keys.  Pero el controlador puedo hacerlo; y cuando esta vertical, todo bien.
+    Porque?  Estoy usando fuerzas diferentes entre los dos?
+
+  - Que hace el nuevo Salience cosa de Daniel:
+
+    - Bueno, es una lista discreta de entidades; pero tenemos que
+      poner algun tipo de clasificacion: para que entidades que esten
+      en regiones distantes del objecto de salience reciben cifras mas
+      pequenias.
+
+      Pero: como hacer esto?  Queremos algun tipo de topologia: de
+      tres dimensiones, un field de altitud con el que podemos
+      multiplicar los coordinates de los entidades, para que
+      deteriminemos el salience "real".  El field de altitud
+      requiraria lo mismo tamano del espacio physico:
+
+      salience = p.x * s.x + p.y * s.y + p.z * s.z
+
+      
+
+  - Replay
+  - Motor action
+    - Inextricably linked to simulation, projection, "imagination"
+    - Recognition
+  
+
+  
+
+  
+
+
+
+1-15-08
+-------
+  x - Converti el "goaltending" en un controlador.
+  x - Remove los EntityDecorators - no son usados mas.
+
+  - Ahora, el LocalKeyController no actualmente hace NADA.  Pero
+    mantengalo para asegurar que no quiero hacer nada nuevo mas
+    adelante.
+
+  x - Todo esta reorganizado - muy bien.
+  - Aregla el "in" - tengo goaltending y on, pero no in, exactamente.  Como hacer esto ...
+
+  x - Remove todos las calls al otro db recordando funcionalidad.
+  x - Remove el menu de "replay", aunque no sea funcional.
+
+  - Check "on" for the "running into stuff" false alarm.
+    --> Hay algun problema que sheep siempre parace "on."
+
+  - Ponga "theory of mind - " descubri que otro wubble ve.
+
+  
+
+1-14-08
+-------
+
+  - Fini los "in" and "on."
+    --> El "on" parace completo; examina' "in" -
+      --> necesita goaltending.
+      --> esta.  Estan en el db los goaltendings?
+
+        --> Pero hay un problema - no se puede usar los colisiones
+            para poner fluents - tienen que ponerlos en los
+            controlodores, porque has algun razon por que algo no
+            funciona bien en el momento - hay muchos fluentes
+            seperados, en lugar de UNO fluente que encompasa todos los
+            tiempos.
+
+
+1-11-08
+-------
+
+  - Mira a "TODO SOMEDAY" para la informacion del removo de mi listos
+    de entities y el uso del EntityManager de Wes.
+
+  - Pone "On" y "In"
+    --> Esto requirara' los decoradoras de goaltending.
+
+1-10-08
+-------
+
+  x - The fact that I don't use the EntityManager in my code is going to
+    cause trouble.  Port my entity managing code to use Wes's EM.
+
+  x - Well, the hooks are already in there I guess.  So it just remains
+    to pull out my own EM code, or blend it with Wes's EM code.
+
+  - Put back in "in" fluent.
+  - Put back in "on" fluent.
+
+  x - Can also make a controller: its "update" will be called every
+    cycle; it can check through the entity's collision list and see if
+    it's on something.
+
+  x - It looks like stateUpdate::testCollision is writing everything
+    that doesn't collide to the database.  This is an awful lot of
+    writing to stuff.  Well, maybe not - maybe that just turns it off
+    or something, cause it's not in the db.
+
+  x - As long as I make my collision stuff a superset of Wes's, things
+    should work.  Right?
+
+  x - The collisionManager should maintain all of those tables itself -
+    symmetric collisions and the like, not offload them onto SPS.
+
+  x - Make an On controller; I can't add stuff to StateUpdateController
+    right now, because I need to use the CollisionManager and Wes's
+    code doesn't have it.  But what if I put it there ...
+
+    --> This happens in StateUpdateController.  For now, that seems
+        the most reasonable place for it.
+
+
+
+
+
+
+
+01-09-08
+--------
+  - Change the pickup power to do something better, although I like the fly power.
+
+  - Make the "simulate forward/back" stuff better - have a UI that
+    contains the existing SheepServer UI, with the appropriate
+    buttons.
+
+
+
+
+  x - NearSpheres are getting left around after the powerups have been
+    harvested.  Have to modify entityRemover to detach the complex
+    from the rootnode.
+
+  x - Make DE:cleanup private, have the people that call it call remove, instead.
+
+  N - It looks like fluents are never getting removed from the
+    Fluent::_fluentIdMap.  I would fix this but maybe it's supposed to
+    be that way.
+
+  x - In the hackmover, when you take control of a remote-controlled
+    wubble, and then leave control, he doesn't get his controls back.
+    That's bad, mmkay?
+
+
+
+
+
+
+
+
+
+01-08-08
+--------
+
+  x - Put the sheep log back to using MySql - getting that changed is a
+    low-priority issue.
+
+  x - What do I need to do for Wes's fluents?
+
+  x - If I adopt them wholesale, I have to deal with a bunch of design
+    decisions I don't like: poor abstraction, poor containment,
+    fluents not having identities as fluents.  On the other hand, it
+    works for him, now.  It seems like the best decision is to steal
+    them entirely, and later, when that fictional time comes, clean
+    them up.
+
+  x - Where are they?
+
+    They're in: edu.isi.wubble.physics.entity.controller
+
+  x - Other tables are not populated appropriately, though:
+  entity_table
+
+  x - lookup_fluent_table gets Forward, but not Jump
+
+  x - user_sessions?  --> call createSession in init().
+
+  x - ..wubble.physics.state.AutoOffFluent: turns itself off if it's not
+    updated on every tick.  But where is the call to pre/post-update
+    getting made?
+    --> from DynamicEntity::pre/postUpdate; each entity goes through
+        the list of fluents (which it maintains in maps _relations and
+        _properties) and issues the appropriate calls.
+
+  x - Where does "forward" et al. get put into the fluent db?  The controller?
+    x --> That's in MovementController, which is subclassed in
+        SheepMovementController.  Likewise, RotationController does
+        Right/Left.
+
+
+  x - Motion? 
+    x --> Esta en SoloUpdateController.  Que hace esto?
+
+    x --> Esto es responsible por descubrir posiciones, rotaciones, etc.
+        Usandlo se puede eliminar, creo, mi sheep log, o almenos se
+        podria hacerlo aunque este controlador pone lo mismo...
+
+    x --> Se pone Motion, Position, PositiveVerticalMotion,
+        NegativeVerticalMotion, Rotating, Rotation
+
+
+  - Porque hay dos tipos de que parece como lo mismo fluent: "Left"
+    vs. "left", "Right" vs. "right", etc.  Los que tienen los lettras
+    grandes estan en tables: fluent_Right pero no fluent_right.
+
+    x --> Hay un monton de problemas en el table lookup_fluent_table -
+        ejemplos varios de "left" y "right" repitados muchas veces.  Wtf?
+        x --> Era un problema con mi Fluent clase, que fue sub-clasado
+            del Fluent de Wes, y que no jugaba bien con los studd de
+            db.
+
+  x - Tambien, session_id esta incrementado algunas veces: de 1 a 3.  
+    x --> Algo en el problema previo causaba este problema tambien?
+        Trate algunas pruebas..
+    x --> Parece que si, no hay problemas mas.
+
+  x - Ponga la controlador para LiftingController en el wubble.
+
+
+  x - Los "forward" et al. han retornado.  Que fuck esta pasando?  Es
+    porque cambie el cur entity a algo que siguia con los otros
+    fluentes?  Parace ok.
+
+  x - Porque no funciona el turning controlador en el cliente?
+
+  x - ensegure que las funciones: delayedUpdate, postUpdate son
+    implementados - ve in la funcion update en el clase de
+    SuperRoomState para ver ejemplos.
+
+  x - Como hacer transparente los nearspheres?
+
+  x - Ponga los otros controladores: LookAt, FOV (donde esta?), etc.
+
+
+IMMED, NO-INTERRUPT
+-------------------
+  x - SJumpController vs. JumpController - They should both work.  Do I
+    see jumps in the statedb?  Yes.  Jump is ok.
+
+  x - Why doesn't Jump get put in lookup_fluent_table?
+    --> Fluent.add() does this; who calls that?
+    --> It was an issue w/ not using Wes's database stuff; 
+
+
+TODO SOMEDAY:
+--------------
+
+  - Database doesn't work right with SQLite (turning transactions
+    on/off before connect, specifically.); right now you just make a
+    new class that does all the same shit, only modified slightly to
+    use SQLite.  (See StateDatabase.)  Put all of this into a coherent
+    hierarchy.  Also split the database naming from the
+    initialization, since the sheep state.db will conflict with Wes's
+    state.db.  Or maybe they won't, actually ...
+
+  - The sheep log I'm keeping is redundant in the face of the statedb
+    that exists now, although it's more convenient to use in replay.
+    Figure out how to merge replay functionality w/ Wes's code.
+
+  - Pull the entity management stuff out of SPS; use Wes's
+    EntityManager exclusively.
+
+    - The entity stuff in SPS
+    - The Wubble list in Wubble
+
+    - [my] Wubbles need to subclass WubbleEntity.  Maybe I can just
+      get rid of my Wubble class, and add the team and whatever few
+      other things to Wes's Wubble class.
+
+  - One of the troubles is that in SPS, the entity list contains all
+    of the entities, and I depend on it doing so; the EntityManager
+    maintains seperate trees for everything.  If I add a unified
+    Entity hash, modify the various "add" commands, and the various
+    "remove" commands, that would be a first step to a unified system.
+
+  - The entities DO get populated in all the appropriate maps, via
+    constructor chaining: the DynamicEntity constructor puts stuff in
+    the DE list, the Entity constructor puts stuff in the Entity list.
+    The problem comes when you're removing them: right now, the
+    remover is responsible for knowing what he's removing and removing
+    stuff from all the appropriate places; a better system for this is
+    to have the remove function do it itself; the remover shouldn't
+    have to know so many details of the entity manager.
+
+   --> For the incremental update, though, I could just have SEntities
+       and SDEs do the right thing in their remove functions.
+
+       --> The main problem would seem to be setEntities.
+
+
+
+
+01-07-08
+--------
+
+  x - Copy Android eclipse projects from glasgow
+  x - Update WW
+  x - Re-familiarize w/ ww stuff
+  x - Print out Arbib stuff
+  x - Finish that weird test
+
+  - I want to use Wes's superapp.  What's in the way of that?
+    - Remove entity_relations table
+
+      --> See where code crashes
+        Fluent::writeToDB() - need to use these new tables and stuff
+
+        --> For now, just write some gibberish into the fluent table.
+            I just want ot see if the SQLLite is working.
+
+    - Use Wes's Fluent code instead of mine.  This will require a major rewrite.
+
+    N - This fluent code is all about calls to Fluent.record() - it's
+      the controller's responsibilities to put fluents in the db, to
+      monitor them, etc.  Different sorts of monitoring - every tick,
+      etc - are specifiable somewhere.
+
+  - WTF?  It's claiming there are no wubbles, even though I added one...
+
+    - Somehow this seems to be related to the db; when I turn off
+      logging, it works.  So I must have fucked something up when I
+      fucked around with that sheep table...
+
+      --> Part of it might be that the table doesn't exist for the
+          sheep_log db, though what this has to do w/ anything I
+          dunno.  Maybe it's crashing somewhere...
+
+      --> It will work with Wes's fluent stuff in the SQLite db, and
+          the old sheep db in the mysql db; but when I try to move the
+          sheep log into the sqlite it doesn't work.  It looks like
+          something's crashing somewhere and fucking everything up; I
+          don't know why this is.  I think I'm doing something fucked
+          up by trying to use the normal DatabaseManager with the
+          SQLite;
+
+          -- I should break this stuff into a new DB manager that
+             gives more control, so I can use it for both MySQL and
+             SQLite stuff.  Then see how that goes.
+
+
+    x - Add those other tables, as defined in: edu.isi.wubble.physics.state:StateDatabaseI
+      --> Done in inst()->connect()
+
+    - Pull out code that uses mySQL
+      - Use SQLite for normal state updates, too.
+
+    - NOTE: StateDatabase needs to have stuff bracketed with
+      beginTransaction() and endTransaction() - I added this, now, to
+      SPS:update.
+
+
+  - Make +/- keys only jump to Wubbles, for now.  Saves time.
+
+  N - Wes's fluents: the various controllers take responsibility for
+    "recording" them.
+  
+
+
+
+  N - To bypass all the login nonsense, in Main::main replace the
+  login thing w:
+    app.startState(MenuGameState.class.getName());
+
+  N -  Where's the logging ...
+    N - It's in SPS:sendWorldUpdate
+    N - set SPS:_logUpdates to true
+    
+  N - sheep database: db "sheep" on cdr.isi.edu, username crue, pw: musical
+
+  x - Cleared db, see if it still logs ok.
+
+
+-----
+  N - A good SQL client (for MySQL dbs)  is CocoaMySQL
+  N - A really nice SQLite client that works as a Firefox plugin(??) is SQLManager.  Use this.
+
+  - There's an SQLite driver in the WubbleWorld/lib directory.
+
+
+
+
+
+
+12-18-07
+
+    - There's a followup problem: the physics sphere is somehow
+      rotating.  THis shows up if you look at the SJumpController,
+      which will still let you climb walls, since every so often the
+      thing is rotated appropriately.  Fixing this will fix the fucked
+      up reports from the NS, as well.
+
+  - Can I toggle entities inactive when they're made current?  So they
+    can be controlled without negatsry?  In particular, of course, I
+    mean Sheep.
+
+    -- Okay, they're not behaving now, but they're still doing weird
+       shit with their rotation.
+
+       -- Jump controls don't work either.  Neither rotation nor jump.
+          Is it bc Sheep are too heavy or something?
+
+          -- No.  It's something to do with the fact that sheep are
+             goofy-ass cylinders; I don't want to worry about this
+             anymore right now.
+
+
+  - Add some kind of "you win" thing.
+
+
+12-17-07
+
+
+  x - Remove the keyboard controller when you go away, add the networked
+    controller.  (Is there enough info to add the network controller?)  
+
+    x --> Seems to be.
+
+  x - Changing cur entity (+/-) doesn't add/remove controllers anymore.
+
+  x - Do collisions with the floor show up in the collision list?
+
+  x - Looks like the SheepMovementController is getting pulled when I
+    switch the curENtity to the wubble.  (Some other controller is
+    getting put on.)  I think it's bc when the cur entity switches,
+    the old curEntity gets its controllers removed.  Which isn't right
+    - it should just have its KEYBOARD controls removed.
+
+
+  x - Make the gardens work again.  Which means: make the movement
+    controller take the gardens into account.  Or maybe it does.
+
+  x - Fix jump.  It's doing it because the wubble is always colliding
+    with the nearsphere, so inherit from the jumpcontroller and check
+    to see what the collision is with.
+
+
+
+
+
+
+12-13-07
+
+  - Problem w/ delayedUpdate: _stateUpdate has not, seemingly, been defined yet.
+  x - If I take out delayedUpdate will it work?  Yup.
+ 
+  - Prob w/ delayedUpdate: Wes's entities assume that every entity has
+    a full suite of controllers, since to him Entity is a more
+    restrictive term than to me.  In particular, walls are not his
+    notion of entities.
+
+  - So what I need to do is only call some of these updates on DYNAMIC entities.
+
+  - See if the EntityManager knows what's going on.  Yes, but only
+    about Wes's classes, not mine.  Still, I think it should be ok...
+
+    --> No, I'm not okay.  Wes has no notion of a physicsEntity that
+        isn't dynamic, so the classes are inherantly fucked up.
+
+    - It might do to add these controllers to static objects, too, but
+      let's see if that becomes a problem or not.
+
+    - Is the problem that makeNode, which creates a physics node, gets
+      called in doConstructorStuff, and allows a window, between the
+      end of the official constructor, and the update, in which there
+      is no physics node assigned?
+
+      --> No, that can't be it.  Damn it.  Can it?  No.
+
+    - BarrierEntities are not getting physicsNodes somehow...
+
+    - Damn it, it comes back to the fact that Wes has no notion of
+      StaticEntity.  So I'm changing SE to use a DPN, see if it works.
+
+      No, it doesn't really work.  What if I take a static entity,
+      like Barrier, and just inherit from Dynamic?
+
+      So the problem: everything, static and dynamic, needs to be from
+      Wes's DynamicEntity class, because these are the only things
+      that are physical objects.  But what if I made these sorts of
+      things not entities?  Or what if I added an intermediate class,
+      that stands between DynamicEntity and SEntity, that introduces
+      Physics into the equation?
+
+      The point of having everything as an entity is that it allows
+      for a uniform approach: collisions are handled the same way,
+      everything is treated the same way.  It's nice and easy.  It
+      also means everything in the system can, potentially, be
+      controlled, and fucked aroudn with.
+
+      Really, the main thing is that it's a unified collision model.
+      But so long as shit gets piped into the collisionManager, maybe
+      this doesn't matter...
+
+      You can see how to handle this collision-y aspect of things in
+      PhysicsEntity:setupCollisions: so long as there's a physics
+      node, you can register for collision events.
+
+      What if Physics extended SEntity, and not Dynamic?  That's what
+      it should do.  Then Dynamic can extend Physics instead of
+      SEntity.
+
+
+
+REWRITE NOTES:
+  Collisions:
+    Remove Wes's DynamicEntity::setupCollisions; use the mechanisms defined in the collisionManager.
+
+
+
+
+      What happens if I use trickery to allow some stuff to be static?
+      I think when there were collisions between DynamicEntities that
+      were Dynamic, and DynamicEntities that were static, some
+      negatsry happened.
+
+      
+
+
+
+
+
+12-12-07
+
+  x - Continuing with the controller conversion
+  x - TimeManager.update isn't called in any of the base classes, only SuperRoomState. 
+
+  - Setting entities inactive should NOT remove all controllers, just
+    the movement controllers.  And, in the event of a wubble, it
+    should reset the controllers to be remote.  
+
+    This doesn't really matter now, but it will break later when I
+    fuck around from the kbd.
+
+  x - Need to add sheepMovementController instead of normal movement
+    controller to DEs that get affected by sheep in the garden.
+
+  - Move the controllers from the old place to the new place
+
+  - Change the update cycle on entities; pull beforePhysics and
+    afterPhysics and use Wes's functions.
+
+    beforePhysics = preUpdate
+    
+    Add call to delayedUpdate in the SPS update loop
+
+    afterPhysics = postUpdate
+
+    I should probably move the react/behave stuff into the pre/post
+    update.  Maybe into the preupdate.  Or maybe not - having
+    react/behave, which gets called in play, allows me to seperate
+    stuff that's happening in the world from the entities doing stuff.
+
+  
+
+
+12-11-07
+ 
+  x - Now it's working: Jimbo is fine, the client is fine.  What are the differences?
+
+    x - As I run main, it's loading the sheep game directly, not the login page.
+      x --> Nope, it's not this.  Running with real login server on cdr,
+         pointed at tioga, and it works w/ Jimbo.
+
+    - DB access is off.
+
+
+  x - Turn off audio, makes things faster.
+    
+  login on
+  audio on
+        doesn't work.
+
+  Something in all of this is fucked up.  Looks like audio is the key, somehow.
+
+  - Wes has a host of controllers.  We need them, too.
+  - Need to adapt my fluents and stuff to what Wes has.
+
+  - Trying to get Poseidon eclipse plugin to see what's going on here.
+
+  - Want full/richer fluent set for sheep
+
+  - Salience:
+    - Things other wubbles are looking at
+    - Can we get a more rigorous formulation of this?
+  - Goals
+    - What can be intuited as goals
+    - What does it mean to have a goal?
+
+    From a spatial standpoint, it would be some physical location
+    where it needs to go, or is going.
+
+
+  x - Adapt Wes's Entity stuff to mine.
+
+
+  - How is shit getting written into my local sheep database?
+
+  SPS::setupDBLog() -- appears to be pointing to wubble-world, not my
+  local one.  Oh wait - when I'm viewing the thing I'm viewing the
+  wubble-world one, aren't I?  Yeah ...
+
+  You can look in SPS: setupDBLog to see how to connect to something
+  else.
+
+  x - Make SPS a singleton.  Right now this functionality is in Utils, I think.
+  --> Added convenience call in Utils.
+
+  x - Subclass Wes's entity stuff.
+
+  x - Subclass Wes's dynamicEntity stuff.
+
+
+  - Unify the controllers in dynamic entities.
+    - Something about the controllers is strange.
+
+
+
+  - Move/add functionality to the EntityManager, to get that out of Entity.
+  - Start migrating the Entity list stuff into the Entity manager.
+
+
+
+  - Entity unification:
+    Identify common elements in my entity and Wes's.
+    Subclass from Wes's.
+    
+    
+  
+
+
+
+12-10-07
+
+  - What other fluents?
+  - Don't log the game unless some flag is set.  It just makes everything hopelessly messy.
+  - New representations: 
+    controllers
+    personal space
+    what other wubbles are looking at
+      - Give the wubble a perfect ToM?  
+   Give wubble ability to run a mini-simulation
+
+     - Which is a subset of having the system run a simulation:
+       populating the appropriate things, executing, getting "results"
+       (which are mental representations, of a sort) and then
+       integrating the results of that run with the other runs.
+
+     - Formulated in such a way, a "simulation" is a universal view, a
+       superset of every wubble's individual views.  An objective
+       truth, as it were.
+
+     - Slicing up this "objective truth" into each wubble's vision of
+       it is tricky.  It's even possible that the differences don't
+       matter: one can imagine a subjective truth that is the same as
+       the objective truth.  The conditions of such a thing would be
+       that each wubble knows everything.  This is likely to be the
+       case inasmuch as each player knows everything.
+
+    - It seems likely that for a first cut, a wubble cares about what
+      the other wubbles are thinking/sensing.  Which would likely be,
+      at least, what the other wubbles are seeing.  So a notion of
+      what a wubble can see is quite important.  But really, there's
+      so much that it can see.  How to differentiate?
+
+    Some ideas:
+      - Regions I could reach in a tick or two, which stands in lieu of:
+
+      - regions I can affect.  (It would help if wubbles had
+        manipulators of some kind.)
+
+      - entities that can reach me
+
+        - To some degree this is entities that are near to me.  In
+          what way is this notion sufficient, and what not?
+
+  - In all of these issues, care must be taken to make what is
+    represntationally salient at least *able* to distinguish what is
+    "personally salient" for a player of the game.  To what degree is
+    this true?
+
+  x - Turn off logging
+
+  x - Run a sim, with the actual client, and see what's up.
+
+    x - What's going on with sheep and the other wubble not showing up?
+
+    x - What if I create twenty sheep, in the normal way?  Are they not
+      getting added to the update msg for some reason?
+
+  x - Something's fucked up; I'm getting crashes: SPS first, it looks
+    like, but only when the client is connected.  Right?  Seemingly so.
+
+    x - Are fluents being written to db?
+    x - Yes.  Why?  Oh, it's Fluent:log or something like that.
+
+  x - Turn sheep wandering back on.
+
+  x - See what's coming across in the world updates.
+
+  x - I keep running out of heap space in SGS.  Why?
+
+    x - The wrenches are coming across in the updates, and yet they
+      don't show up graphically.  Is this related to the crash?  Do
+      they ever get added to the world?
+
+  x - What if I take out Jimbo?
+
+    --> That was the problem.  I don't know why, but without Jimbo
+        things work, and there's no crash anymore.  I guess it's
+        because when the wubble exists this way, addWubble never gets
+        called.  Except that addWubble DOES get called - that's how
+        Jimbo is added.  Am I adding his ID/team as reasonable values?
+        Let's see what the others are...  Huh.  Jimbo 100 1 all seem fine.
+
+        The only reasonable explanation is that when a client
+        connects, and gets the worldUpdate msg, that Jimbo comes
+        across in some weird way that wubbles that get added during
+        login DO NOT come across.  What could this be?
+
+        I still have no idea.  You would expect that whatever doesn't
+        work would also not work when a new client joined a game with
+        existing clients.  But from what I remember, that's not a
+        problem.  Could I run two clients and see?
+
+        WHOA!  Yeah, the problem is there.  So this is a real problem
+        that will break the actual game.
+
+12-5-07
+  - Other fluents:
+
+    x - Contact
+      x - Can create itself from the scene.
+    x - Add a canonical Contact fluent.
+
+    - When collision hash gets reset the collisions between stuff in
+      the zones doesn't get re-populated like the rest.  What's up
+      with this?
+
+    - Why is it that the zones aren't getting their collisions reset?
+      What's different?
+
+    - I think the dif. is that zones are non-physics entities, and the
+      collisions get computed in Entity::react -> checkCollisions.
+      This has to come AFTER collision list has been cleared, and
+      before anything is done with the col. list.
+
+LESSON:
+  Some collisions appear in the list during the physics update.
+  Others (graphical collisions, which include collisions between
+  non-physics entities) appear after the entity's "react" cycle.
+
+
+  NOTE - Everything seems to be in order except for the fucking
+    intermittent contact between the tree-shape and the blue-zone.
+    Since this is done using visual bounding boxes and stuff, and
+    since the visual bounding boxes are all fucked up and weird, due
+    to that impossible-to-find problem, weird periodic shit happens.
+
+    The best solution would be to fix that problem.  Since that's not
+    possible, the second-best solution is to yank the tree and the
+    pole and that other crap, which has weird physics interactions and
+    which causes assorted problems.
+
+
+    Push: 
+      - Moving contact over time.
+      - Can fluents be hierarchical?  It would be easier if push could ask: are there any "contact" fluents active?
+
+
+    x - On
+      x - Contact + normal at the point of contact.
+      x - Might need to save collision details somewhere, to get this.
+
+      x - Or I could just launch that fluent from the collision manager.
+        This might actually be the right place to do it.
+
+      x - Till now I was saving the Entity in the inner collision hash.
+        This was a convenience, but it's dumb - what I should be
+        saving is contact details.
+
+    x - Go (createFromScene)
+    - Turning
+
+
+    - Jumping (do we need this?  It's sort of implied with Contact, no?)
+
+
+
+
+
+
+
+12-4-07
+
+  x - NS predicates aren't working.  Fix this.
+
+    x - Why are the fluents getting closed?  In front-of shouldn't be
+      getting closed, and, more, it appears to be getting closed twice
+      for some reason.
+
+    x - What's with this double-closing bullshit?
+
+    x - The fluents are occasionally closing themselves (and then
+      immediately re-opening) for no good reason that I can tell; wtf?
+
+      --> Ah yes - collisions are being reset every few ticks in
+          Replayer.play; clearly collisions need to be reset, or else
+          once something collided it would appear to collide forever.
+          But maybe this isn't the right place.  Certainly if we reset
+          collisions we should do so before collisions are detected,
+          so that there isn't that one-tick gap...
+
+          Where does the collision hash get populated?  OH: I should
+          reset collisions in the collision manager, just before
+          re-computing them.  That might be a start...
+
+          Actually it's not really CM's job ... CM will get the
+          callback from jmephysics at some point in the update cycle.
+          So I need something like this:
+
+UPDATE
+  clear collisions
+  get collision updates
+  monitor fluents, etc.
+
+
+
+afterPhysics:
+  doStuff
+    processInterestingCollisions
+    # At this point, the collision list needs to be right or else stuff won't work.
+
+I can't figure this out.  Here's a section of printout:
+
+1 Collision hash is reset!
+2 PIC: Looking for NE collisions with Jimbo_nsc
+3 PIC: Looking for NE collisions with Jimbo_nsc
+4 -- Processing col between Jimbo_nsc and Jimbo
+5 -- Processing col between Jimbo_nsc and Jimbo
+6 -- Processing col between Jimbo_nsc and redWrench1
+7 -- Processing col between Jimbo_nsc and redWrench1
+8 Closed fluent PositionalFluent_inFrontOf_Jimbo_redWrench1
+
+Line 1 can only happen in Replayer.play, which gets called early in update
+
+Line 2 then jumps to processInterestingCollisions, which gets called
+from doStuff, which gets called in afterPhysics, which supposedly
+comes after the call to super.update in SPS::update.
+
+This would be fine except for line 4: this should happen BEFORE line 2
+- if collisions trigger physics callbacks, then lines 2-3, which are
+supposed to happen AFTER the physics callbacks are taken care of,
+should happen AFTER lines 4-7.  What gives?
+
+Here's another run, more heavily annotated w/ printouts.
+
+1  Collision hash is reset!
+2  SPS: Updating physics
+3  PIC: Looking for NE collisions with Jimbo_nsc
+4  -- Processing col between Jimbo_nsc and Jimbo
+5  -- Processing col between Jimbo_nsc and redWrench1
+6  SPS: fluent monitoring
+7  Closed fluent PositionalFluent_toLeftOf_Jimbo_redWrench1
+
+Again, what surprises is why lines 4-5 don't precede line 3.  Those -- lines should occur as part of physics processing callbacks, no?
+
+SPS: Calling play
+Collision hash is reset!
+SPS: updating camera, user input.
+SPS: Updating physics
+PIC: Looking for NE collisions with Jimbo_nsc
+     --> UpdatePhysics::afterStep -> Entity::afterPhysics
+     so afterStep gets called before the collision computation
+PIC: Looking for NE collisions with Jimbo_nsc
+
+-- Processing col between Jimbo_nsc and Jimbo
+-- Processing col between Jimbo_nsc and Jimbo
+-- Processing col between Jimbo_nsc and redWrench1
+-- Processing col between Jimbo_nsc and redWrench1
+SPS: fluent monitoring
+Closed fluent PositionalFluent_toLeftOf_Jimbo_redWrench1
+SPS: Calling play
+SPS: updating camera, user input.
+SPS: Updating physics
+PIC: Looking for NE collisions with Jimbo_nsc
+
+FUCK.
+
+AfterPhysics, and the chain of shit that results in the call to
+afterPhysics, is non-intuitively computed.  Partially because there
+are physics sub-steps, and afterPhysics is potentially getting called
+a number of times each update cycle, but more importantly because
+afterPhysics, as it stands now (called via UpdatePhysics.java) is
+getting called with the physical state of things at a weird point.  So
+take out that UpdatePhysics thing; and move it to a "real"
+afterPhysics update.
+
+  x - Turn goaltending fluent back on
+
+    x - The name of the thing goaltended isn't coming through; I don't
+      want the weird hashup name that I made, I want the "redWrench1".
+      Don't I?  Hmmm.  Well, for now, leave it alone.
+
+
+
+
+
+
+12-3-07
+
+  x - How can I get NearSphere to produce these predicates, since it's
+  a decorator and not a predicate?
+
+  x - Fluents need to be able to close themselves off.  For some, like
+    "Go" it's trivial - based on keypresses.  For others, like
+    InFrontOf, it's more difficult - you have to monitor the status.
+
+    How might you do this?
+
+    These fluents that need to take a reading from the NS complex
+    could take the NSC as an argument in their construction.  That's
+    part of the answer.  But they still need a periodic monitoring
+    function, called on the updates.  This will have to be added in
+    the SPS update loop.
+
+  x - Add "monitor fluents" section to SPS update function.  Can make
+    this a static method on fluents.
+
+  - So InFrontOf, and ilk, will be launched by the NearSphere.  The NS
+    will monitor the state of the nearness; the Fluents will query the
+    NS to see if they are still true.  In essence, the NSC is the
+    foundation of all those fluents.
+
+  x - Make an argument-free constructor for fluents, and a
+    doConstructorStuff to be the common point of reference.
+
+  x - NSC needs to create the inFrontOf fluent by passing the name of
+    the the thing the agent is in front of.  This will be true of all
+    those NS fluents.  Which means I should generalize from the get go
+    - change inFrontOf to something like PositionalFluent, and have
+    the relationValue set to "inFrontOf" etc.
+
+  x - Right now NSC only does front and back.
+
+  x - Insert the appropriate entities in the course of processInterestingCollisions.
+  x - Might cleanup this function, too.
+
+  NOTE - The preds introduced by the NSC are horrible, and certainly don't
+    accord, from a 3rd person viewpt, with what one thinks of
+    w/respect to over/under/etc.
+
+  x - in NSC, instead of maintaining seperate stuff for each directional
+    pred, make one big hash, with key: predName, val: tgt.  (The agent
+    is assumed to be the agent the NS is associated with.)
+
+  x - FUCK.  The predicate hash has to be a map from relation to another
+    hash, with all the targets.
+
+
+
+  - Should I be resetting the collision map on each tick?  NOT
+    resetting would seem to imply trouble for things that depend on
+    it.  THink about that.
+  
+
+
+
+
+
+
+
+
+
+12-2-07
+
+  - Get NearSphere-related stuff into the fluent pipeline.
+
+
+  x - Write the inserting code into Fluent.
+
+  x - Does Go get opened and closed off appropriately?
+  x - Introduce distinction between predicate/fluent name and it's
+    textual identifier.  The latter is unique, the former is not.
+
+    x --> If I get the classname in a superclass, will it give the
+        actual name of the subclass?  Yes.
+
+  x - The problem in this matching of fluents idea: is there's a GO
+    fluent open for wubble JIMBO, the assumption right now is that
+    there will only be ONE GO/JIMBO combination.  This is true enough
+    for GO, I suppose, but will it always be true?
+
+  x - Each fluent -- each predicate? -- instance needs a "getIdentifier"
+    method that will return the identifier of some PARTICULAR INSTANCE
+    of the fluent: so for GO(Jimbo), the identifier will be
+    GoPred_Jimbo.  Likewise, each fluent CLASS needs a static method
+    by which it can lookup an open instance: if I say
+    GoPred.getIdentifier("jimbo") then it will return "GoPred_Jimbo".
+    Fluents that take a number of arguments will override
+    getIdentifier, as appropriate.
+
+  x - Instead of all this shite, just use the Fluent class of interest
+    to call Match with, and it will construct whatever identifiers are
+    appropriate, and pass the fully-disambiguated name to
+    Fluent.Match.
+
+
+
+
+        
+
+
+  - Add code in writeToDB to write it to the entity_relations table.
+    Fill in default values for some things that might not apply.
+       (Maybe open the table in Predicate base class.)
+
+  - Have the predicate or fluent writeToDB deal with two-place
+    relation things, or whatever is going to be the most common sort
+    of predicate.  Something like: "BIGGER-THAN SHANE HOULE"
+
+  - Actually, Fluents could override this themselves: they'll want to
+    write something like: CHASING SHANE WES 10 20.  And maybe whatever
+    other fields Wes needs to use his SuperTool.
+
+
+
+  - Get the fluents reorganized appropriately.
+  - Make a table, and have them inserted into there as appropriate.
+    - Isn't there a common hook for this?
+
+  x - There are the event-triggered fluents, which are fairly easy:
+    right now they're triggered on keypresses.  Then there's the other
+    kind, which are triggered by changes in the environment.  This
+    latter type needs to have a way to instantiate itself: make a
+    fluent singleton of each type, that checks to see if it's been
+    instantiated.  If so, it does its business.
+
+    --> This is in Predicate::CreateFromScene.
+    --> And the fluent isn't a singleton; rather, one of every kind of
+        fluent gets created in sps::initPreds, or something like that.
+        Predicate maintains a hash of every kind of predicate
+        (notably, it's the latest instance of every kind of predicate)
+        and it's this list that CreateFromScene iterates over.
+
+  x - So I need to create one instance of all the predicates in SPS, so
+    that CreateFromScene can be called on them in the update loop.
+
+
+
+
+
+11-29-07
+
+  - Having problems with getting TWO keypresses/releases on my LocalKeyController.
+
+  - Also, even when I make this work, I'll only be able to capture
+    movement fluents for entities that are controlled, directly, with
+    keyboard movement commands.  Since I will eventually want to
+    capture these same fluents for sheep, I need to modify stuff at
+    the movementController level to do a callback.
+
+  x - Also, the controllers are somehow getting added when you make some
+    entity the current entity - so if you iterate through the powerups
+    to make the CE Jimbo, the powerups are processing the key events.
+
+    x --> First, since these controllers are set in the DE contructor,
+        how is this happening?  Why don't ALL des exhibit this
+        problem?
+
+        x - Strangely, the behavior on non-wubbles is what you'd expect:
+          no double press/release.  What's special about wubbles...
+
+          x - NO!  It's in addMovementControls.  So that's getting
+            called twice, for Wubbles - once in general, and once when
+            you make the thing the current entity.
+
+    x --> Second, how do I fix it?
+
+    x - I need to make sure that controllers aren't added twice.
+
+  x - What's the best way to do this: to have separate controllers for
+    fluents and actual movement, or to make the fluent-detecting
+    controller call the real movement controller?
+
+    --> seperate.
+
+  x - When I'm checking for fluents, there's a pickle: if I'm using
+    "forward" and "backward" and also the local versions that I make
+    with LCK, I'm going to get redundant firings.  
+
+    x --> I guess I can just ignore the redundancies: if I get two
+        presses in a row, I don't open another fluent until the first
+        has been closed.
+
+  - How am I going to detect when to close off jump?  The jump fluent
+    needs to be informed of the collision; it could check the
+    collision list on each update, I guess, and figure out when to
+    take itself off.  Or maybe we can add one more layer to collision
+    checking - let anybody subscribe to an entity's collisions - no,
+    that seems too much machinery.  Just check the collision list.
+
+  NOTE - Note that really, capturing fluents based on keypresses is
+    hacky; one can imagine a wubble running into a wall, sending a
+    sucession of forward{on|off} commands, even though the wubble's
+    not moving forward.  These should really work by analyzing actual
+    movements, but for now this will be ok.
+
+  - Add another button to the replay list: RECORD.  This is so I'm not
+    ALWAYS recording what's going on in the db, which makes it really
+    unwieldy to test replay.
+
+  - Add left/right fluents.  This will be the same as go, really, so
+    perhaps abstract all of these away into the same kind of binary
+    fluent...
+
+  --> Yeah, the current Fluent/GoPred construction is fucked up.
+      Change this.
+
+
+11-28-07
+
+  - Prepare the predicates that I have to spit out enough to populate
+    Wes's properties/relations tables.
+
+    - I need to be able to find the beginnings/ends of things.
+      When go starts
+      When go ends
+      
+      When go starts you create it.  Mark it as started.  Each update
+      cycle it checks to see if it's ended.  If it has, it does stuff.
+      This stuff can include calling out to Wes's code to create
+      properties and relations and whatnot.
+
+      --> Where are the hooks for moving the wubble on the server?
+
+      --> It's DynamicEntity that sets up all of these things:
+          movement, rotation, jump.  Maybe I should put callbacks for
+          movement, rotation, and jumping, so that I can harvest the
+          fluents.
+
+      - What I want to do is to map local keypresses to call this
+        moveWubble function, so that whether or not the control is
+        local or remote it goes through the same door.  How the fuck
+        can I do this?
+
+      - Make another controller for doing the callbacks; see
+        DynamicEntity for the skeleton for how this can be done.
+
+        --> Do I get key releases?  Locally I can probably finangle
+            it, but remotely, not.  So how will I close "go", for
+            instance?
+
+
+  - Make a table for fluents.  (Wes is using SQLlite.  Why?)
+
+  - Wes has implemented the "fluents" as I'd call them in
+    edu.isi.wubble.physics.state.  They're broken into properties and
+    relations, and maintained in an SQLlite database.
+
+    The relations are pairwise, so that answers that - I suppose in
+    the event that more complicated relations, spanning more than two
+    entities, need to be created, you can curry them into sets of
+    pairwise constituents.
+
+
+
+  x - Make the replay actually replay.
+
+    x - There might be an issue with doInitReplay, which removes all the
+      dynamic entities.  The threading might be an issue; in fact, it
+      will be.  So hook the replay button to make a new instance of
+      the replayInitializer.
+
+    x - Make explicit records of game resets; if nothing else, log the
+      updates with the current gameIDs.
+
+      x --> Which would require us to actually KEEP game IDs.
+
+
+    x - The resetting doesn't seem to remove the dynamic entities, at
+      least not the wrenches.  Not sure about the wubbles.  Is the
+      call to removeDyn actually getting executed?
+
+      --> The printouts, at least the one I'm looking at, claims that
+          the DEs are getting removed, including sheep and wrenches.
+          So wtf?  Does it *always* fail to remove wrenches?  IE,
+          after one replay, will there be 8?  Or is it just somehow
+          when a replay gets interrupted?
+
+          --> Ah, no.  It's when the log plays through, and the game
+              resets, it's adding new wrenches, seemingly.  The
+              question is, why are they getting added?  The wrenches
+              always have the same names, so even if you don't know
+              there's a game reset you should be finding the existing
+              stuff to update it...
+
+              Unless: all the usual game mechanics are still
+              happening.  If you're replaying, and a sheep goes into
+              the endzone, it will score.  If it scores and causes a
+              game reset, stuff will get removed, then repopulated,
+              and this repopulation will interfere with the log
+              playback.
+
+              So turn off game mechanics when you're replaying, for
+              now.  Which means, specifically, no removing stuff when
+              it collides with endzones, no game-resetting, etc.
+
+              Well, I'll start off by simply not resetting the game.
+              Stuff will still get removed, although I can imagine
+              scenarios where this causes problems, too.
+
+              x --> This seems to work well enough for now.  Clear out
+                  the logs and try again to see.
+
+    
+
+
+
+
+
+
+
+
+
+11-27-07
+
+  - Pausing the game doesn't stop the sheep from doing stuff, I
+    suppose because that's happening in the afterPhysics loop.  Can I
+    fix this?
+
+  - Put real replay back
+
+  - Put the predicates in; can start out by making them all fluents
+    (so I can use Wes's visualization tool).  This will get what we
+    need for now.
+
+  - 
+
+  leftOf, etc.
+  moving (go)
+  jumping
+  turning
+  contact
+  push
+  goaltending
+  etc.
+
+  Next thing: get subjective near working, with a visualization: highlight all the entities that are subj near.
+
+    - Highlight some bunch of entities
+    
+  subjective near
+
+  - How might the wubble learn classifications for simple things -
+    animate (sheep and wubbles) vs. dynamic but inanimate (wrenches)?
+
+
+  x - Figure out time assignment:
+
+    - Maintain a time variable in SPS.  This will replace, or be an
+      adjunct to, the replay time stuff.
+
+    - When logging new events, time should be whatever the current
+      time is.
+
+    - When replaying, the curtime will be whatever's getting replayed.
+
+  - Add another table to the DB, that includes game markers - when a
+    game starts and stops.  Might also want events; although the
+    predicates should capture this functionality, shouldn't they?  So
+    create a predicates table.
+
+  --> A problem is that not all predicates will necessarily fall into
+      the same format; what we really want is the flexibility to have
+      predicates defined as seems reasonable, not according to some
+      arbitrary template.  Which means that making "a predicates
+      table" is misguided.  How might we get around this problem?
+
+      -- Make one giant predicates table, which indexes into other
+         tables, corresponding to specific predicates.  These specific
+         tables contain full info for each particular predicate.
+         PROS: Allows fast access (through main pred table) and full
+         granularity (via tables for each specific table) CONS:
+         recreating type system in a database is slow and lame.
+
+      x -- Is there a java object database?  
+
+        x --> There are a number of technologies.  JDO is probably the
+            most rigorous.  There's also pBeans.
+
+        n - It looks like JDO is the best bet - make a Predicate class,
+          then subclass from it as appropriate, and use JDO to persist
+          shit.  Will probably be easiest to use this two-tier method:
+          the general predicate store, which is "normal" SQL, and then
+          the JDO way, which lets you store all this crap.  So you can
+          quickly query and find stuff the general way, and then do
+          get the objects, as necessary, using JDO.
+
+        - Specific use cases?
+
+Near:
+  Front-of
+  Back-of
+  Left-of
+  Right-of
+
+  - Output these as actual predicates.
+    - Make/enhance predicate class.
+    - When you instantiate it, it creates it in the database.
+
+  - What's the relationship between the stuff in the predicate table
+    and the logs?
+
+    - You can recreate the pred table FROM the logs.  The logs are the
+      most atomic actions in the system.
+
+    - Are predicates saved?  How does this work - you save predicates,
+      then you replay stuff ... the predicate table should only
+      contain predicates that have been active in this run.  So the
+      predicates are keyed according to timestamp - replay the logs
+      (which generates timestamps) and the predicates are
+      re-generated, keyed on the timestamp.  If the system is running
+      live, predicates (keyed on timestamp) are still created, it's
+      just that now they're created for the first time.
+
+
+
+
+
+
+  - At first, I thought Near was pointless - it's just an
+    information-poor version of these other four preds.  But really,
+    this is hierarchy; and even though you can reconstruct near from
+    any of the four - in fact, its reconstruction is trivial - adding
+    the structure gives a bit more information to the world; doesn't
+    it?  It seems that it offers a hint to the system, that perhaps a
+    more general thing will suffice and a more specific thing is
+    unnecessary.
+
+
+
+
+
+  x - Make a function that sets the FPS text, so I can overload it.
+
+  x - Add stuff in sps to mimic the _fpsNode stuff, called
+    _spsDisplayNode, where I can add assorted stats that I care about
+    to the display.
+
+  - When I render _spsDisplayNode it renders on top of _fps.  Why?
+    How do I get it to add BELOW the other stuff?
+
+  - Replay:
+    - Show "replay" in the info bar when replaying, or "live" when not.
+    - Frame advance
+    - Frame decrement
+    - Other replay problems?
+
+  - Imitation
+  - Salience
+  - Attention
+
+
+
+11-19-07
+
+  x - On replay init, remove all dynamic entities.
+
+    --> The problem is I'm removing them too late; they're getting
+        created (Presumably) early in the replay, then the wrenches
+        get removed.  The removal needs to occur at the very
+        beginning.
+
+        - Except that the fucking threading issue complicates matters;
+          if I'm doing a remove, and then the stuff gets added, and
+          then the threading comes through and it gets removed...
+          Fuck.
+
+        x - Can I make the initReplay a callable, so it happens on an
+          update cycle?
+          
+        x - Are these entity nodes getting pulled from the root node?
+
+
+  x - This isn't quite working right.
+  --> I think it's fixed now.  Hard to tell, though.
+
+  x - Database replay:
+    x - Stop doing stuff on the last tick, but don't close the jme view.
+    x - Where do we stand with multiple entities moving around?
+
+      --> They're moving.  We need to denote when they get removed
+          from the sim, though, as (unless the in-game rules remove
+          them, like when a sheep goes into the endzone) they persist.
+
+          - Objects get pulled on a game reset.  They're all removed,
+            ultimately, by a call to one of the "remove"s.  At this
+            point I can send a logging msg indicating that an object
+            has been removed.
+
+          - Add a new column to the table: flags, or something, as a
+            catchall.  A value of 0 means remove.
+
+  - Logging is fucked up; I have all these disparate checks to see if
+    I'm replaying, and then logging if not.  Move all of this into the
+    logging functions themselves.
+
+  - Move the logging functions out of worldupdate message into their
+    own module.
+
+  - Whoo!  
+
+  x - Physics isn't working right on replay - the wubble is super tiny.
+    Am I missing a scaling step or something in wubble creation?
+
+    --> It's the NSC.  Where does that get added?  Why isn't it added
+        in replay?
+
+        x - Initial diagnosis: the position gets updated via doStuff,
+          which gets called in update.  In the replay loop I dunno if
+          this is getting called.  Which goes to show that the replay
+          loop is a fucked-up abstraction.
+
+        x - Entity decorators get called, eventually, in afterPhysics,
+          which is itself called in the update loop.  Somehow or other
+          it looks like this is getting triggered from behave(),
+          though I'm fucked if I can figure out how.
+
+        x - Actually, it appears the NSC isn't even getting created at
+          all.
+
+          --> Got it.  It was being done in the constructor, instead
+              of the post-constructor, and since replays don't create
+              wubbles on teams (probably they should) it wasn't
+              getting done.
+
+
+  x - Make sure when the window is closed that the appropriate remove
+    gets sent, so subsequent games can be replayed.
+
+    x --> Ok, that seems to just work automatically.
+
+  x - Make a replay menu, that allows you to roll back, move forward,
+    stop.  Like a VCR button menu.
+
+
+
+11-15-07
+
+  - The game crashes at weird times, with weird errors.
+
+  - The game isn't fun anymore; sheep need to be slowed down, the bump
+    you give them needs to be better.  They need to be easier to
+    score.
+
+  - I took the gardens out; until the penalty gets saner, it makes the
+    game suck when there's a lot of sheep in there.
+
+  - The trees and other solid objects should probably go back to not
+    being solid - they're inconvenient when you're trying to move the
+    wrenches around, which would be ok - inconvenience = strategy -
+    but considering that the physics is super touchy, and the wrenches
+    will explode around when they run into a tree, it's probably best
+    to make them not physical.
+
+  - Powerups need a type in the log (ie, SPEEDY)
+
+  - Constructors for sheep, wrench need to take a vector instead of
+    (or in addition to) x,y,z.
+
+  - change _isReplay to _isLive
+
+  - First player in the game can't see the second player, when he arrives.
+
+  - Every so often the damn server just won't spawn - no output,
+    nothing.  Did Wes know something about this sort of problem?
+
+  - Wubbles aren't going away properly when the client crashes.  This
+    used to work all the time; wtf?
+
+  - SheepGameServer keeps running out of heap space.  Huh?  Are we
+    being frivolous with something?  Messages, perhaps?
+
+  x - Jimbo doesn't respawn properly.
+
+11-14-07
+
+  - Entities should be interesting when they first appear in the game
+    x - why aren't they being logged?
+
+    x - isInteresting is broken; Jimbo isn't interesting, even though
+      he's moving, and then, after he runs into a sheep, he doesn't
+      stop being interesting even when he isn't doing anything
+      anymore.
+
+      --> move interesting check from behave to react.
+
+  x - Game mechanics shouldn't create DEs if we're running a simulation.
+
+  - The system should end when the replay is over; it shouldn't roll
+    into the normal setup.
+
+  - The state of the system should be more clearly delineated - having
+    replay mixed in like this is getting way too chaotic.
+
+  - Set the replay to insert pauses when subsequent ticks are far
+    apart.
+
+
+
+  - Now get the replaying fucking working.
+
+
+   
+  - Finish sps::updateReplayedEntities - add type info to db.
+
+  - Turning OFF replay for checkin - re-enable this to continue working.
+  - Also removing Jimbo.  Put him back in for testing.
+
+
+11-13-07
+
+  x - Finish abstraction of decorator class
+  x - Add in Wes's stuff for quadrant determination on NScomplex
+
+    x - This is doing a bunch of computation based on our direction; I'm
+      using the wubble's visual node for this.  Is this right?  What
+      are the controllers rotating?  Yeah, it looks like that's right
+      - the visualnode is what's passed to the rotation controller.
+
+      So wtf?
+
+      Is it that what I don't want the actual rotations of stuff; I
+      want the difference in rotation between them?
+
+  x - Ok, I'm an idiot.  It's working now, except that the collision is
+    reported using the position of the collided entity.  For the
+    wrench, this position DOES NOT approximate a point mass - the
+    position is the center of the handle.  So it's more wrong the
+    further you move from the center of the handle.  Perhaps a
+    two-layer thing can be done - if the collision is detected, and
+    it's a wrench, do a trimesh or something.  Essentially I need a
+    better value for the vector between the wubble and the thing it
+    collided with - a point of collision, not just the entity's
+    position.
+
+    
+
+  n - Decorators will only officially include one object atached to the
+    entity.  If you want multiple things (like multiple spheres in the
+    complex) use multiple decorators.
+
+  - Database playback function.
+
+  - What's the best way to do this?  I could have a client that reads
+    from the DB and then blasts that info to SPS, which can do
+    everything as before.  Except that it can't - there are no
+    keypress events coming.
+
+    So really, SPS needs to have a different mode - a replay mode, and
+    a normal mode.  If it's in replay mode, it does replay stuff.  And
+    for it to do replay stuff, it needs to pull the stuff out of the
+    DB.
+
+
+  - The problem with the sparse DB (one that doesn't contain full
+    update messages for every entity in the system at every tick) is
+    that when an entity is removed it needs to be reflected in the db.
+    If this isn't done the simulation system will just think the
+    entity hasn't moved from the last update cycle.
+
+  - Another thing to think about is that entities won't be added via
+    the normal mechanisms - I don't need to invoke wubbleAdder, for
+    instance - and so anything that gets set up in those functions
+    will have to either be moved somewhere else (constructor) or else
+    not depended upon.
+
+  - The logs don't contain type information; they probably should, so
+    we know what to create without going through a bunch of name
+    comparison bollocks.
+
+
+
+
+
+
+11-12-07
+
+  - Broke handleNonEntityCollisions out of the collision manager -
+    will do something clever with these and make everything work.
+
+  - However, visually, the near-sphere isn't staying updated with the
+    wubble.
+    --> Needed a call to updateWorldVectors.
+
+  - Sphere is hard to understand, with those physics bounds only.
+    (All of the them look the same.)  Can I make a visual, too?
+
+  - Adapt collisions for non-entity objects; it will be an assymetric
+    hash, where the key is the name of the non-entity object, and the
+    val is the other object, either entity or non, that it collided
+    with.
+
+  - So the NS complex should be one sphere with different quadrants,
+    the way Wes did it.
+
+  - Moreover, I need to abstract this thing to allow a host of objects
+    that are physical yet attached to the wubble.  If there are no
+    more entity decorators I think I'll just modify the abstraction to
+    meet this behavior.
+
+  x - Add another hash, that lives on Entity, that maps a decorator to
+    the entity that it decorates.  Use this so that an entity doesn't
+    generate collisions with its own decorators.
+
+  x - I need to move some of the responsibility for meaningful collision
+    finding into the handlers themselves - all this fucking about with
+    sub-decorators is retarded.  A decorator will need to figure out
+    that it shouldn't pay attention to collisions with its own entity.
+
+  - Will have to figure out how to make decorators, which update their
+    positions based on the entity's they decorate, do this update
+    based on the rotation of the entities they decorate, instead of
+    just absolute position.
+
+
+
+
+
+11-8-07
+
+  - Whose bounding volumes are being used to calculate the collisiosn
+    between near-spheres and other stuff?
+
+  - Motherfucker, triangleCollisionResults is slow when applied to the
+    nearsphere.  This all happens in NS:doStuff - what if I only check
+    it if the wubble's own node (which is a simple bounding sphere) is
+    intersecting with something?  That should speed it up a shitload.
+
+  - Oh, wonderful.  It's still slow as fucking shit whenever the rough
+    intersection is true.  I need to use physical intersections; what
+    was the issue here before?
+
+    - It seems like for every entity, the top-level DPE will have to
+      be a non-physics node.  The physical instances of stuff can be
+      attached to it.  But there will be implications for this - to
+      see what they are, I guess I can make DPE getNode() return a
+      normal node, and see what breaks.
+
+  - Who sets up physics collisions, again?
+
+  - Look at
+    edu.isi.wubble.physics.entity.controller.PredicateController,
+    where Wes implemented the quadrants of the NS complex.
+
+  - Ok, fuck it.  Make the NScomplex physical entities, all ghosts.
+    In their update move them to some fixed offset from the host
+    entity's node, and call it a day.
+
+    --> If I handle the collisions in physical space then I'm gonna
+        have to figure out how to manage the CollisionManager; it's
+        looking for the entity corresponding to this near sphere
+        complex, and obviously not finding it.  How do I want this to
+        work?
+
+
+
+
+11-7-07
+
+  - Implement predicates for goaltending, nearsphere stuff.  Make sure this all works.
+    - GT works
+
+    - Check the different NS bounds
+
+      - These spherical bounding volumes aren't working with the ends
+        of the wrenches, although they work on the bars.
+
+      - When the wubble's sphere rotates it will rotate the spheres,
+        too.  This is a legacy of the bipartite division between the
+        visible sphere and its rotation.  So the NS complex needs to
+        be hooked to the part that doesn't rotate.
+
+        --> Daniel says Wes did something that uses the old
+            quadrant-based reckoning.
+
+      - Ok, things are moderately broken - these fucking bounding
+        volumes are working strangely; sometimes they're rotating in
+        an odd manner, sometimes they're bounding the overall object
+        in ways they shouldn't.
+
+      - Have the collision thing in the NS complex set instance vars
+        so the complex can be queried: inFrontOf that returns either
+        null (nothing in front of) or "Jimbo" to say that Jimbo is in
+        front of the entity this NS is attached to.
+
+      - Can I get the wrench to bound right?  I want just the wrench
+        body itself to have a tight polygonal boundary, and the
+        goaltending cylinders too, but no overarching bound on the
+        whole fucking thing.
+
+        --> I dunno what to do about this; apparently everything needs
+            some bounding volume, and when you're doing purely
+            graphical collision detection (for the near spheres) it's
+            this bound that gets used.  Wes might know some way around
+            it, but it might be that something way more elaborate has
+            to be done - making the NS a physics entity, except you
+            can't attach a physics entity to another physics entity
+            ... I dunno.  Fuck.
+
+  - Where is the predicate code?
+
+  
+  Next step:
+
+  - Action sphere: a NSComplex-like complex that changes based on
+    functional properties.  For instance, if a Wubble is moving, then
+    the space it can get in the next simulation tick will change: it
+    will be oblong in the direction of movement.  If we stick one of
+    these babies on every entity we'll begin to have a crude idea of
+    entailments.  For instance, if a sheep is behind a wubble, and
+    moving toward him, then the wubble is in the sheep's "area of
+    effect", which is a salient position.  One might imagine someone
+    talking about the sheep that's chasing him, that's butting up
+    against him, someone else might say something about the sheep
+    that's "behind you", where the sheep's trajectory creates a
+    virtual "behind" that is NOT implied by the behind-region in the
+    wubble's NS.
+
+  - Note that this wants the replay/simulation model, since it's too
+    much processing to do online (an ActionSphere for every dynamic
+    entity in the system, where there are 31 sheep and 4 wubbles.)
+
+  - It might also be easier, from a learning perspective, to start
+    with 2-wubble data.  This is the easiest scenario to interpret
+    different language constructs; since no player will know for sure
+    when utterances are directed at him, as opposed to some other
+    player, or an observation to "the world in general" (which become
+    more likely the more players there are).  One can imagine an
+    analogous situation, where a child who doesn't speak english is
+    tries to learn the language from being blindfolded and dropped
+    into the middle of a dinner party.
+
+    - Thinking a moment about this latter scenario: what would a child
+      learn?  One can imagine that it's very little, in general, but
+      also that it might learn its own name.  For instance, all the
+      chatter going on all around it is nearly impossible to figure
+      out, but if someone says "Shane" and then, each time they say
+      this, they touch me on the arm, I will relate the word "Shane"
+      to something personally relevant.  After enough time I might
+      attribute it to a unique identifier for my existance (although
+      this seems a pretty advanced context, when really considered)
+      but certainly I should be able to associate the word with a
+      salient aspect of my presence.
+
+    - What would make possible the scenario described above?  It seems
+      obvious that being touched on the arm is a sort of stimulus
+      entirely distinct from other stimuli I might experience, even
+      low-entropic ones.  Shane + the sound of a gong is straight-up
+      less relevent to the organism than being touched.  One might
+      deduce from this that we have to equip the organism with a
+      richer sense of embodied self; however, I'm not sure this is
+      true.  What seems closer to the right way of thinking about it
+      is that we, as humans, do attribute an extra weight to tactile
+      stimuli involving our physical self, and that we use this to
+      form our world view and to drive much learning.  In an entity
+      lacking a special weight to this class of stimuli, different
+      results would follow.  We'd need to be prepared for these
+      results, whatever they are.  Maybe an extra-high salience for
+      tactile stimulation is a precondition for ToM AS WE UNDERSTAND
+      IT.
+
+
+
+11-6-07
+
+  x - Run db test: are we recording shit properly?
+  
+
+11-5-07
+
+  x - Get database stuff for replay back in.
+    n - WorldUpdateMessage.logToMsg(), called from SheepPhysicsState.sendWorldUpdate()
+
+
+  - Add isUpdated() function to DynamicEntities, wherein the DE tells
+    you if it's done anything of note and needs to be updated.
+
+    - Of course, I'm unsure of how to let it know if it's done
+      anything of note...  If it's moved, or rotated...  
+
+      x --> Ok, I already have these hooks in.  isInteresting() is
+          exactly this.  
+
+      x --> There's a function, checkIfInteresting, that handles these
+          checks.  Make this work right, and I'm done.
+
+          x -- Wrenches aren't getting counted as interesting when they
+             rotate slightly; (they are, however, when they get hit.)
+             Also, powerups that get taken aren't interesting.  Get
+             around this by making everything that collides
+             interesting.
+
+          x -- collisions not making interesting.  wtf?
+
+    
+  x - RIght now Entity.behave() gets the update strategy, and calls the
+    update method on this strategy.  Then, in the SPS update loop, it
+    specifically calls the update method of all the dynamic entities.
+    There's way too many sorts of updating going on here; it's
+    confusing.  Is anybody even using the strategy anymore?  Maybe I
+    should nuke these, and just have an update method...
+
+  x --> updateStrategies are gone.  DynamicEntities have an update
+      method, which gets called from behave.  This makes things much
+      simpler.
+
+  - I think the powerups are getting set as interesting by the wubble,
+    and then resetting.  WTF?  Why won't PUs be interesting?!
+
+
+
+  - Powerups need to be interesting when a wubble runs into one.  (Why
+    aren't they?  I suppose bc they're dynamic.  Need to write custom
+    code to handle this, I guess.  Or rather, modify what's there in
+    the collision handler already.)
+
+  - There's a difficulty in replaying the log - we've got to be able
+    to tell when something disappears.  How to do this?  Since the log
+    is currently just all the fields in the WorldUpdateMessage, make
+    some configuration of those fields that means it's gone away...
+
+    - Add a "remove" field to the update msg?  If that's checked, then
+      the thing gets pulled?
+
+  - Actually, since the WUM assumes, right now, that it's getting
+    complete info on every entity (doesn't it?) we need to make a
+    modified version for use in playback, which assumes the WUM is a
+    changeset...
+
+  - Write a "simulate" function that plays back the shit from the logs.
+
+
+
+  - Can turn DB stuff on.  This should offer a huge compression even
+    compared to the 1/30 logging.  (Of course, could do both...
+    Probably that's a good idea.)
+
+  - Review database hooks
+  - Need a quick and dirty compressor, that doesn't send updates of stuff if it hasn't moved very much.
+    x - Can approximate this idea right now by only loggin once every 30 ticks, or whatever.
+    - Later, can do offline culling of the db to reduce accumulated cruft.
+    - Eventually, let each entity, in its update function, decide whether it's done anything.  If it hasn't, don't save it to the log.
+
+
+
+
+11-2-07
+
+  --- Biederman presentation ---
+
+Darwin's thesis: with respect to their intelligence, humans are just
+like other animals, only more so.
+
+It looks like Darwin was wrong.
+
+  - New thesis: humans have special hardware that can do kinds of
+    symbolic processing that other creatures can't do.
+
+What is symbolic processing?
+
+  - Canonically described in {newell1980pss}
+
+  - PSS hypothesis: "A physical symbol system has the necessary and
+    sufficient means of general intelligent action."
+
+Why do we think that people do symbolic processing and animals can't?
+
+
+
+  - PSS critique: {moravec1988mcf}
+    “Encoded in the large, highly evolved sensory and motor portions
+    of the human brain is a billion years of experience about the
+    nature of the world and how to survive in it. The deliberate
+    process we call reasoning is, I believe, the thinnest veneer of
+    human thought, effective only because it is supported by this much
+    older and much powerful, though usually unconscious, sensorimotor
+    knowledge. We are all prodigious olympians in perceptual and motor
+    areas, so good that we make the difficult look easy. Abstract
+    thought, though, is a new trick, perhaps less than 100 thousand
+    years old. We have not yet mastered it. It is not all that
+    intrinsically difficult; it just seems so when we do it.”
+
+  - How to resolve these ideas?
+
+
+
+
+@book{newell1995gps,
+  title={{GPS, a program that simulates human thought}},
+  author={Newell, A. and Simon, HA},
+  year={1995},
+  publisher={MIT Press Cambridge, MA, USA}
+}
+ 
+@book{moravec1988mcf,
+  title={{Mind children: the future of robot and human intelligence}},
+  author={Moravec, H.},
+  year={1988},
+  publisher={Harvard University Press Cambridge, MA, USA}
+}
+
+@article{newell1980pss,
+  title={{Physical symbol systems}},
+  author={Newell, A.},
+  journal={Cognitive Science},
+  volume={4},
+  number={2},
+  pages={135--183},
+  year={1980},
+  publisher={Lawrence Earlbaum}
+}
+
+@article{harnad1999sgp,
+  title={{The Symbol Grounding Problem}},
+  author={Harnad, S.},
+  journal={Arxiv preprint cs.AI/9906002},
+  year={1999}
+}
+
+@article{barsalou1999pss,
+  title={{Perceptual symbol systems}},
+  author={Barsalou, L.W.},
+  journal={Behavioral and Brain Sciences},
+  volume={22},
+  number={04},
+  pages={577--660},
+  year={1999},
+  publisher={Cambridge Univ Press}
+}
+
+
+
+10-24-07
+
+  x - How do I close the db connection when I'm done w/ it, when SPS
+    gets closed?  Is there some pseudo-destructor I can use?
+
+  - Need a quick and dirty compressor, that doesn't send updates of stuff if it hasn't moved very much.
+    x - Can approximate this idea right now by only loggin once every 30 ticks, or whatever.
+    - Later, can do offline culling of the db to reduce accumulated cruft.
+    - Eventually, let each entity, in its update function, decide whether it's done anything.  If it hasn't, don't save it to the log.
+
+
+10-23-07
+
+database is on car; use crue:musical password for writing access to the tables
+to create databases need to login as root; saddam hussein != osama bin 1aden
+
+  x - Add GT columns back in
+  x - The second GT col doesn't report collisions
+
+  - There's a werid problem with endzone collisions sometimes not
+    getting reported for a long time; what's going on here?  I don't
+    know how to recreate it on purpose, bc usually they do work.
+
+  - Add logging; or database storage; or however we're going to do that.
+    - See about saving the updateMsg.
+
+  - What should be logged, exactly?  The position update message?
+    Seems like this would be the best way; then games could be played
+    back through the same exact mechanism, except you wouldn't be
+    controlling a wubble, just playing it back.
+
+    - Add the hooks to do this, too.  How frequently do you play the
+   msg?  I suppose there's timeticks in it?  Or if not, we should put
+   them there?
+
+  - The nearspheres are rotated with the wubble's node; they should be
+    attached to the non-rotating one.  (This happens when a wubble is
+    pulling a wrench from the inside.)
+
+  - Add NS and GT predicates that actually work, and figure out where to put all that shit.
+
+  - Complete fluent work; if fluents are too hard for some stuff, fuck
+    it.  Match shit up in post-processing.
+
+
+10-22-07
+
+  x - All the powerups the wubble runs into are being flagged as
+  unknown powerups.  What does this mean again?
+
+  x - Set SPS inactive when there are no wubbles in there.
+    --> This is done on wubble-remove now; need to do it at startup,
+        too.  In the update loop is probably the best place.
+
+  x - Add server control to remove the current entity, to see if the
+  game goes inactive when the wubble is removed.
+
+
+  x - Make decorator into  list or a hash, instead of a single member var.
+  x - Add NS back in
+
+
+10-17-07
+
+  x - Give the current entity wubble movement controls.
+
+
+10-16-07
+
+  x - These indicators have outlived their usefullness.  Pull them.
+  x - What is this huge and moving bounding box?
+    --> A mystery never to be resolved, apparently.  It grows and
+        shrinks and rotates based on the dynamic entities attached to
+        the rootnode, not the actual boundaries the scene should
+        entail.
+
+  x - Move entities around the same way wubbles are moved around when
+  the client moves them.
+
+  x - Fluent is a good solution, but the processing required to handle
+    them - finding when stuff stops, matching them up, etc - is a lot
+    more work for some things.  So when it's easier for a fluent (like
+    goaltending) to be a predicate, have it be a predicate.  When not
+    (like go) make it a fluent.  
+
+  x - Add GT predicates
+  x - Do predicates get saved in the pred hash?
+  x - How is the pred hash getting updated?
+
+
+10-15-07
+
+  - Add proposition list
+  - Add proposition hooks for various activities
+    - Move
+    - Turn
+    - Jump
+    - Goaltending
+    - Subjective near
+    
+
+10-12-07
+
+  x - Add goaltending columns to wrenches.
+
+10-10-07
+
+  x - Make eater de-activate after getting a sheep
+  x - Add NS complex to wubble
+  x - Make wrenches blue/red based on which team they're closer to.
+
+  x - I want collisiosn between the NS complex to go into the standard
+  collision list.  Put them there, with fixed names.
+
+   x  --> This is that same fucking problem with the wrench mesh -
+        collisions are reporting the mesh name, not the "real" entity
+        name. How did I solve it before?
+
+  n - It would probably be best to make the NS an actual entity, so that
+    the collisions could be processed in the normal entity update
+    cycle, and the results appear on the collision list like anything
+    else.  The only difference would be you wouldn't want reports of
+    NS collisions with the wubble it's near to, presumably.
+
+  n - Or maybe this is all nonsense.  I should think on it more.
+
+  x - Add the other preposition sphere: above, below, left, right.
+  - Why don't the internal nodes in the nscomplex render all the time?
+
+  x - los sphere, etc, aren't rotating with the wubble.  Do I need to
+    attach them to the _visualSphere instead of the main node?
+
+
+
+
+10-9-07
+
+  - Sometimes wubble starts in the middle of the world, and doesn't go
+  to its goal position; is stuck there.  WTF?
+
+  x - Change sticky back to the old way.
+
+  - Allow eater to send an opponent wubble back to its goal
+  x - Put in more wrenches
+  x - Sticky only sticks sheep
+  x - Restrict powerup range to midfield.
+  x - Make wrenches heavier.
+
+  x - Put corrector on wrenches so they can't tip on their ends.  -->
+  This causes lots of weird trouble.  Go to iron wrenches, and fix
+  this later.  (Wood wrenches are too easy to score ten sheep at a
+  time with.)
+
+  - Fix double PU bubble issue
+    - PowerDown wubble on None removes all powerups.  PowerUp on None just makes an explicit call to PowerDown.
+    - Don't generate NONE powerups in makeRandomPowerup.
+
+    - Keep count of how many PUs a wubble has;
+    - Double powerups turn him black
+    - When powerups go inactive, dec this counter.  Pull itself off the list.
+    - When it just has one powerup, go to that color.
+  
+
+
+10-8-07
+
+  x - Change powerups to have some set number outstanding.  Can just
+    make a static counter in the powerup class.
+
+  - Each powerup should have its own distribution for length of activation.
+
+
+
+  
+  x - Need to rotate the wubbles to look to the middle of the arena in
+  moveToHomeGoal
+
+  x - Need to initially add the wubbles this way.
+
+  x - I got that weird problem, where all is as it should be in physics
+    world - all ten sheep have appeared - but in the client, there's
+    only one sheep.  WTF can explain this?
+
+  --> Ok, it's a crash in the client, caused by a null pointer
+      exception, which looks like a threading issue.  Do I need to
+      handle setWorldState from within an InvokeCallable?
+
+  x - Move IC somewhere else, to messaging, I guess.  (Can I?)
+
+  x - Need to make MTHG not destroy the forward movement controller.  I
+    still have no fucking idea why this happens.
+
+    x - What happens to the physics in this case?  When you push
+      forward, does the physics instantiation of the wubble still
+      move?
+
+      x --> The physics part of the wubble isn't translated; it stays
+          where it was when the world got reset.  Am I translating the
+          wrong node?  Whatever I'm translating, it's enough that the
+          position update comes across right, bc the graphical client
+          goes to where it should.
+
+  x - Change Entity::getPos() to not keep local copy of position vector;
+    this should be getting the position of the node.
+
+
+10-7-07
+
+  x - Sheep and powerups sometimes disappear - either they're present
+    physically, but not graphically (sheep) or vice versa (PU)
+
+  x --> I think this was from the weird multiple-disappearing issues.
+      At least, I haven't seen it since I fixed those.
+
+  x - How many sheep are getting created on reset here?
+    --> 10, supposedly.
+
+  x - Fix the goal colors in the game world - why is the blue endzone
+    black?  And the blue-colored ez corresponds to the red-colored
+    score button.
+
+  - Physics blue/red align with rw blue/black.  But rw colors need to be set properly (blue/red)
+   x  --> Change of plan - change the physics world to be in accord w/ graphic screen.
+    --> Why is the goal such a fucked up color?  Don't know, don't know how to fix it.
+    x --> Eater seems to score sheep for the wrong team.
+    x - Problem is that wubbles are getting added, via addWubble, always to be on team1.
+
+  x - Score updates are being gay.  Is it because the message is skipping ahead?  Do I need to make it invokecallable?
+    x - Done, but it doesn't help.
+
+  x - For some reason Eater is doubling up the score: eat a sheep, get two points.  Huh?
+    x - Maybe if I solve eater it will show the way... 
+
+    x --> It was the collision list; sheep weren't being removed as fast
+        as updates were processing it, so collisions persisted and
+        sheep were multiply-scored.  This was obvious with eater, and
+        probably happened under certain conditions with endzone
+        collisions, too.  Score hasn't misbehaved since I put these
+        fixes in.
+
+  x - After game resets the scoreboard graphic is sometimes not reset.  Wtf?
+
+  x - Can I be on the red team and everything will work again, albeit backwards?  No.  
+
+  x - What the hell is wrong with the endzones?  Why do I always get put
+    in the red endzone, regardless of my team? 
+
+  x --> Oh jesus christ.
+
+
+
+
+
+10-4-07
+  - Turn off sheep movement, get this bumb idea straight; maybe you should slow down the wubble when they hit, so they jump off you?
+
+  x - Move wubbles to goals at game start reset
+    --> Done, but somehow losing the input controller when I do.  ???
+    - Are the red and blue goals backwards in physics world?
+    - Am I moving the physics body appropriately?
+
+    --> Ok, my wub starts out in the blue-color zone.  This is NOT the blue zone in physics world.  Flip them.
+    --> And then on the reset I'm on the other side.  WTF?  Is my team somehow changing?  How can it put me in different places?
+
+    - Turn on the mousehandler for the physics world so I can see the goals
+    - See wtf is going on.
+
+
+
+10-3-07
+
+  x - Fix turning
+  x - Fix default speed
+  x - Add more sheep - see how it goes
+  x - Random powerups with finite TTLs
+  x - Bump sheep
+
+  - Sheep wandering behavior
+
+
+  x - Add Eater
+    x - Score eaten sheep for eater's team.
+    x - add TTL params to PUs.
+
+  x - Speed powerups are not correctly resetting speed to what it was.
+    Why not?  They're modifying speed in the controller, right?
+
+    --> Oops, deactivate was calling getSpeed and setSpeed, not the
+        PU-specific versions.  
+
+  x - Put in gardens.  Check to see where they are by reporting on collisions.
+
+  x - Why don't the gardens report collisions with wrenches?  I
+  suspect it's bc the wrench is a mesh, and collisions work strangely
+  for it... Oh yeah!  It's because the wrench's "real" name is like
+  "wrenchmesh" or something like that.  Fix that.
+
+  x - I can't seem to get collisions with the wrench's graphics at
+  all.  WTF?  How about wrench and endzone...
+
+  x - Ok, I fixed the weird naming issue.  But now the wrench is doing
+    intermitten collisions, for reasons I don't understand...  Like
+    the mesh bounds isn't updated except occasionally, or something.
+    (Is it when there's contact with something?)
+
+    --> No, it's when the bar part of the wrench collides with the
+        garden.  Is there some seperate thing reported when the cup
+        collides?  Nope.  Would it be different if the zones were
+        physical, made of ghostly material?
+
+    n - Oh wait: by setting an explicit bounding box on the wrench this
+      problem goes away; so long as you generate physicsGeometry with
+      triangle accuracy, the bb won't ruin things.
+
+  x - Gardens are doing weird shit - need to have them reset wubble
+    controller to the normal rate when there's no sheep there, so
+    can't use onCollision.
+
+    --> Ok, moved the functionality to update, and did a bunch of
+        other fucking around.  Gardens are done now.
+
+
+10-2-07
+
+  x - Make powerups the right colors.
+  - Make turning go slower
+  - Implement eater.
+  - Implement invisible
+  - Scoreboard should change when sheep are scored
+  - Add gardens
+
+  Gardens makes a "speed modifier penalty" which is then taken into
+  account by the controller.  The prob is that all the controller
+  knows is speed.  Modifying this directly isn't feasible, because
+  each thing that modifies it - powerups and gardens - doesn't know
+  what the default was supposed to be.
+
+  I could subclass the controller, and change getSpeed() to something
+  more complicated...  So all I have to do is overload getSpeed(), and
+  put the infrastructure in place to allow sensible setting for
+  setSpeed() to set assorted modifiers.  The normal setSpeed would
+  work as it already does, but other wubble-specific things could set
+  their own modifiers...
+
+  The new SheepMovementController isn't getting reset properly when
+  Speedy PUs get deactivated.  Fix that.
+
+
+
+
+
+  n - The problem is that after you hit the PU, its getting yankedo out
+    of the entity list.  When you're iterating through the entities at
+    the end, to remove them, it's already gone, so it can't receive
+    the "deactivate" message.  
+
+  x - Solution: let each entity have a link to the PUs it has, and power the entity down on reset.
+
+  x - Create PowerUps with a time-to-live.
+  n - Take away the multiple powerups (powerdown if you're powered-up when you hit another one.)
+
+    x - No - multiple PUs are ok.  Implement a special "MULTI" PU bubble
+      for when this happens.  Also need a way to keep track of it...
+
+    x - Other wubbles should see your PU bubble.
+    x - PowerUps must undo whatever they do on deactivation.
+
+  x - Make powerups disappear.
+
+  x - PUs should be deactivated on level reset.
+    x - server side: deactivate all powerups
+    x - In the processing for setWorldState: remove powerup bubbles on all active wubbles
+
+
+10-1-07
+
+    x - I need a mini version of SetWorldState.  In fact, in can even be
+      the same thing, just non-destructive: addToWorldState or
+      something.  It should essentially do the same thing that
+      addWubble does - when a wubble comes in it needs to get added
+      dynamically to already-running games.  But we should be able to
+      do this for non-wubble things.
+
+    x - Break the chunks out of setWorldState so they're individually
+      callable.  Or make an "addCharacter" that sws calls to dispatch
+      each of the objects in the sws message.
+
+  x - Paramaterize the movement speed, and jumping.  Test these with PowerUps.
+
+  x - Need a task to periodically create a random powerup in a random
+    location.  How to implement this?  Have the normal update function
+    kick it off every so often?
+
+  x - When new powerups (or I suppose new anything) gets created, send
+    an update message to the client so it can draw them.
+
+  x - Have the client draw the powerups in the appropriate color.
+
+
+9-30-07
+
+  - FIXME: Wrench collisions with Zones doesn't work, because the node that they get is "wrenchmesh" or something of the sort.  
+    The mesh mesh needs to follow the naming conventions.
+
+  n - Powerups are fucked up; when you're sending across the setWorldState invoke msg, the createDynamicWorldState function has
+   to add the powerup's type to its name.  So a PowerUp object with type INVISIBLE gets sent across as type PowerUpINVISIBLE.
+   This is so it can be de-marshaled on the other side to the appropriate thing.  This is super super fucking hackish and gay, 
+   but what can you do.
+   
+   x - Move the enum type for powerups somewhere.  The server-side PowerUp class should take one of these in its constructor.
+       
+  x - JimmyPower is initially colliding with the fucking walls and endzones, even though it's in the middle of the fucking air!
+    make it actually a physical entity.
+        
+  x - Why are EndZones not recording collisions?
+    x - Ok, they're recording collisions with all those static entities, just not sheep.  (And maybe not other stuff, too.)
+    x - Are any entity/entity collisions working now?  Check wrench/sheep.
+      x --> Yup, this seems to be working.
+      
+      x - So DE and E collisions aren't showing up.  Why??
+      x - Also, didn't I change the sheep's name?  Why are they finding this weird collision?
+      
+  n - Moved the physics collision registration to a setupCollisions function in PhysicsEntity.
+  
+  x - When start w/ 1 sheep, it's not finding the collision with the endzone when I knock it in.  Why?
+    --> Have to remember to call super().makePhysics, which registers PhysicsEntities for collisions. 
+  
+  x - How can a powerup be colliding with itself?  This makes no sense.
+  x - What's with this phantom sheep/endzone collision?  Start the sheep in the middle of the fucking arena, so there's no chance of this.
+  x - Are powerups full entities?  Ie, they show up in the hash, etc?
+
+  x - Get powerups working; they have to render right, and be moveable, and receive collisions.
+  
+  x - Can they get collisions?  --> Yes, they can now.
+  
+  x - Need to remove powerups on world reset.
+  x - What's with this weird initial set of collisions with everything?
+  --> This is super weird: when you make a visual sphere, with a spherical bounding box, you 
+  get some initial spurious collisions.  I looked through the JMEPhysics code but it wasn't 
+  immediately clear what the problem was.
+  
+  x - Strangest of all, why do the powerups start colliding with this stuff, and then stop?
+   
+9-27-07
+
+  x - Is it possible that an InvokeMsg is being built in SPS, sent to the client w/ method RemoveCharacter 
+  (or whatever) and then a setWorld() is sent, and the latter gets to the client before the former?  You'd 
+  expect to see stuff disappearing from the client's screen but still existing in the physics world...
+  
+  x - After a reset the wrench in physics world becomes dead; this has got to mean something...
+  
+9-26-07
+
+  - Need to make a general entity hash in SheepGameState, so that when wrenches, etc. need to be removed, 
+  they can be.  Actually, I want to be able to remove all DynamicEntities, so this can govern how the thing works.
+  How much overlap is there with the WubbleManager?  Wubbles are special, of course, but maybe a more general manager
+  is warranted.
+  
+  x - Why does the keyboard control work only intermittently?  This seems indicative of a race condition...
+  x - The game resets are somehow fucked up; it's off-by-one somehow, which I can't figure out bc I can't see the fucking board.
+  x - Why are viewpoints getting reset, too?  Is it by going inactive and then active again?
+  
+  
+  x - This nomenclature is getting increasingly fucked-up.  Change deleteWubble to removeWubble.
+  
+  x - Have sheep disappear.
+    x - removeEntity seems to do the trick just fine already, although the client 
+    thinks its a wubble that's been removed, and crashes.
+    
+    x - How do you remove a sheep from the client?  Where do they track the fucker?  
+    I want to remove its node from the graph, but it doesn't seem to be stored anywhere.
+    
+      --> I added a Hashmap to the SGS, where the sheep is stored.  
+      It's extracted and removed when a sheep needs to be removed.
+    
+    x - Makeup InvokeMessage and appropriate handlers: removeEntity, perhaps.
+      - How does a Wubble get removed?  Can use the same mech?  --> Yes, server-side.
+      
+  n - Hey, what if instead of having coll mgr. automatically insert
+    everything into the assorted collision hashes, you can let the
+    entities themselves decide if they want to be in there?  CM could
+    call onCollision, and the entity is responsible for deciding if it
+    should stick itself in there, or opt out?
+
+    n - There's another crash, too - some ODE thing, kicked off in
+      PhysicsGameState::update():
+    
+    "ODE Message 2: vector has zero size in dNormalize4()" - This
+    happens after you let the game run for a while and are wreaking
+    havok with the sheep: beating the hell out of the with the wrench,
+    etc.
+
+    Ok, now it happened without me doing anything at all.  So this is
+    a serious problem that will have to be addressed.  Does it happen
+    faster with more sheep?  Try bumping the number to thirty...
+
+
+9-25-07
+
+  x - What the fuck is up with these crashes?  Will it ever crash
+    without the client running?
+
+    --> So far, no...
+
+    x - It's in the update.  Always in the update when this crashed.
+      But the lines on which it crashes make no fucking sense at all.
+      How can this be?
+
+BACKGROUND
+
+    x - CollisionHandler is set up in PhysicsEntity::makePhysics() --
+      it's tied to the PhysicsNode's (the node of the PhysicsEntity on
+      which the action is invoked) getCollisionEventHandler.  This is
+      a synthetic button that gets called when this node has a
+      collision, apparently.
+
+    x - If it was some race condition on the CollisionManager object
+      itself, giving each node its own manager should address this.
+      Try that and see if there's any help.
+
+    x --> Nope.
+
+    Interesting: the instance that's causing the crash is the wubble
+    "default" and the "leftwall__box", types OdeSphere and OdeBox.  Is
+    this always the case?  It would seem reasonable that it's so,
+    considering that this particular crash only comes when the client
+    is started (ie, when a wubble's in there.)  Also notable is that
+    the walls are not Entities as such; could this have something to
+    do with it?
+
+    Can I make it crash by banging the wubble against the wall?  Yup.
+    This seems to be the problem with one of those crash types,
+    although I'm fucked if I can figure out where, exactly, the thing
+    is crashing.
+
+    Turn the walls into entities.
+
+  n - Weird, how come I can't jump on a sheep?  They claim to be closed
+    cylinders, and I'm jumping right on the fucker...
+    
+    
+    
+    
+  - Add some common pipeline for sending InvokeMessages, so I can track when I'm sending them more easily.
+  
+  - Wes is cute
+  
+  - Add thing to sheep's onCollision() method to remove from the game when it's in an endzone.
+    - Add some mechanism s.t. a sheep knows that it's been removed - since collision updates might not happen on 
+    every tick.
+
+  - SPS::addEntity and SPS::addWubble are badly named - you wouldn't know that they're both called, and do different things.  Fix this.
+  
+  - An entity should be able to unsubscribe from collisions with stuff it doesn't care about.  For instance, the floor.
+  
+
+  
+  x - Move visual collision code from Zone and into Entity; call it checkCollision or something.  
+  Have dynPhysicsNode override it, since those collisions get handled differentlyl.
+  
+  x - SGS: Change the debug "sent a msg" output to say what the msg is calling, when it's an invoke msg.  
+  
+    x - Put the first person controller back in SPS (it's in SPS::initInput()
+    
+    x - Find collision report between endzone and stuff
+      x - Wubbles and endzones don't work
+      x - Sheep and endzones?  No.  Is it possible they're not getting reported?
+      
+      x - Collisions get setup via a call to addEntity->setupCollision().  Maybe this is getting bypassed?
+        x --> Yeah, now wubbles are added via addWubble().  But they might both be called...
+        x --> Yeah, setupCollisions *is* getting called on all the sheep.  So wtf?  Why isn't it working?
+        x --> Is it bc zones are just visual, and not physics things?
+          x --> Seems probable - collisions between sheep and wrenches works fine.  Where do I do collisions between non-physics stuff?
+          x --> check out testCheckCollisions; I think that does the job.  Add it to the update cycle and see.
+          x --> Yup, that does the trick.  Now just need to unify the collision checking.  
+          x -- Have Zones, which arne't physical, test for collisions on their update cycles?
+          
+            x - This already exists.  (Great.)  But I should make non-physical entities all check 
+            for their own collisions, and put the results in the same collision list.
+            
+            x - Make CollisonAction a singleton; add the same instance to every entity.
+            x - Change it to CollManager
+            x - Have methods that can dispatch non-physical collisions, and treat them the same.
+            
+            x - Print out collision list in main update loop, to see if it's working.
+              x --> Nope; printCollisionList is only printing one collision; so something's fucked up somewhere.
+              x -- Is stuff getting put into the collision list in CollisionManager?  Yup.
+              
+              x --> stop clearing the collision list so I can figure out wtf is happening.
+              x -- How is floor__staticNode getting into the collision list?  And why is it never colliding with anything?
+              
+              x - Ok, there are two choices: make the floor and walls entities - which is kind of dumb - or 
+              have some other sort of collision handler for these things that maintains its own collision stuff.  Well, is it that dumb?  
+              That's what a static entity is, right?  How hard would it be to make the floor a static entity?  
+              Then all this stuff would just work.  And in fact, that's the whole point of static entities?
+              
+              x - Ok, now there's a "BarrierEntity" class, that can be used to make the floor and walls, 
+                  and which has all the properties of a real entity. 
+              
+              x - Add non-physics pieces to the collision list.
+              
+              x - non-physical collisions resolve to entities by looking up the names of the things that collide.
+                Since what's colliding is the visual component, and the visual components tend to be named stuff
+                like xxxx__static_box, I do a string compare to strip out the __static_box part.  This is slower 
+                than I'd like.  Solutions (to be implemented later) are: name visual nodes the same as their 
+                high-level counterparts, or ...
+                
+                
+
+                       
