@@ -1,0 +1,87 @@
+
+;;; --------------------------------------------------------------------------
+;;;
+;;; --------------------------------------------------------------------------
+
+To install the WubbleWorld servers.
+
+1) Run the deploy script and you will have a WubbleWorld.tgz file sitting
+in the wubble world directory.
+
+2) Copy this directory over to cdr.isi.edu to the location...
+
+/home/jeanie/research/jeanie-baby/java/
+
+3) extract the files to this directory with the following command.
+
+tar -zxvf WubbleWorld.tgz
+
+4) Start the login server
+
+nohup ./login &
+
+5) Start the RPG Server
+
+nohup ./rpgServer headless &
+
+6) Start the Sheep Server
+
+7) Start the Room server (in Allegro)
+
+The room is run using screen.  To see if there is already an active
+server execute "screen -r" and that will try to reattach to a previous
+screen.
+
+If no previous server was running execute
+
+"screen emacs -nw"
+
+Start allegro with
+
+M^x mlisp
+
+cl-user> (alo :jeanie-baby)
+cl-user> (in-package :jb)
+jb> (run-jeanie-server 10020)
+
+ctl-a ctl-d will detach the screen process
+
+;;; --------------------------------------------------------------------------
+;;; 
+;;; --------------------------------------------------------------------------
+
+To distribute the client
+
+1) Again execute the ./deploy script and build the WubbleWorld.tgz
+file
+
+2) To build the WubbleWorld.app for Mac OSX
+
+   a. Run /Developer/Applications/Java Tools/Jar Bundler.app
+   b. Main Class: edu.isi.wubble.Main
+   c. Choose Icon:
+   <your-cvs-path>/jeanie-baby/java/WubbleWorld/WubbleWorld.icns
+   d. Classpath and Files
+      Add files:
+      <your-cvs-path>/jeanie-baby/java/WubbleWorld/dist/WubbleWorld/WubbleWorld.jar
+      <your-cvs-path>/jeanie-baby/java/WubbleWorld/dist/WubbleWorld/lib/*
+      <your-cvs-path>/jeanie-baby/java/WubbleWorld/dist/WubbleWorld/natives/*.jnilib
+      <your-cvs-path>/jeanie-baby/java/WubbleWorld/dist/WubbleWorld/natives/*.dylib
+   e. Properties
+      1. Heap Minimum Size:  1024
+      2. Heap Maximum Size:  2048
+
+   f. Create Application
+   
+   g. Open Disk Utility
+      
+      a. Click on New Image
+          Size 100mb
+          Encryption none
+          Format read/write disk image
+        (This creates an open image on your desktop, drag
+          WubbleWorld.app to it)
+      b. Eject Image
+   h. FTP image to cdr.isi.edu
+   g. /var/www/wubble-world/downloads/      
+

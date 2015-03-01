@@ -1,0 +1,4 @@
+Main-Class: edu.isi.wubble.Main
+Class-Path: lib/jme-font.jar lib/jgn.jar lib/FengGUI.jar lib/gluegen-rt.jar lib/jogl.jar lib/odejava-jni.jar lib/jme-effects.jar lib/jme-audio.jar lib/jme-terrain.jar lib/jme-physics.jar lib/jme.jar lib/jme-awt.jar lib/jme-collada.jar lib/jme-gamestates.jar lib/jme-scene.jar lib/jme-model.jar lib/lwjgl.jar 
+
+

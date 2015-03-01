@@ -1,0 +1,29 @@
+!#/bin/bash
+jar cvfm WubbleWorld.jar mainClass edu/isi/wubble/*.class  edu/isi/wubble/*/*.class edu/isi/wubble/*/*/*.class edu/isi/wubble/*/*/*/*.class edu/isi/wubble/*/*/*/*/*.class media/models/*.jme media/models media/textures/*.* media/textures media/data/
+
+mkdir dist/WubbleWorld/
+mkdir dist/WubbleWorld/lib
+mkdir dist/WubbleWorld/natives
+
+cp -r lib/* dist/WubbleWorld/lib/
+rm -rf dist/WubbleWorld/lib/CVS
+
+cp -r natives/* dist/WubbleWorld/natives/
+rm -rf dist/WubbleWorld/natives/CVS
+
+cp -r scripts/* dist/WubbleWorld/
+rm -rf dist/WubbleWorld/CVS
+
+mv WubbleWorld.jar dist/WubbleWorld/
+
+jarsigner -keystore webstart/dotkeystore -keypass flat2# -storepass flat2# dist/WubbleWorld/WubbleWorld.jar wubble
+
+pushd .
+cd dist
+
+rm WubbleWorld.tgz
+
+tar -zcvf WubbleWorld.tgz WubbleWorld
+
+popd
+mv dist/WubbleWorld.tgz .

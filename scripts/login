@@ -1,0 +1,3 @@
+#!/bin/bash
+
+java -classpath ".:WubbleWorld.jar:lib/mysql-connector-java-3.1.14-bin.jar" edu.isi.wubble.login.LoginServer
